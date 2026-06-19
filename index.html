@@ -1,12 +1,363 @@
-<!-- index.html -->
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>Discrete</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
-  <h1>Website is live</h1>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</helmet>
+
+<div class="dc-style-1">
+
+  <!-- ============ NAV ============ -->
+  <header class="dc-style-2">
+    <nav id="dcNav" class="dc-style-3">
+      <a href="#top" class="dc-style-4">
+        <img src="assets/logo-mint.svg" alt="Discrete logo" width="30" height="30" class="dc-style-5">
+        <span class="dc-style-6">Discrete</span>
+      </a>
+      <div id="dcNavSpacer" class="dc-style-7"></div>
+      <div id="dcMenu" class="dc-style-8">
+        <a href="#threat" class="dc-style-9 dc-hover-1">Post-Quantum</a>
+        <a href="#" class="dc-style-9 dc-hover-1">Explorer</a>
+      </div>
+      <a href="#download" class="dc-style-10 dc-hover-2">Download</a>
+    </nav>
+  </header>
+
+  <a id="top"></a>
+
+  <!-- ============ HERO ============ -->
+  <section class="dc-style-11">
+    <div class="dc-style-12">
+    <div id="dcHeroText" data-reveal class="dc-style-13">
+      <div class="dc-style-14">Post-Quantum · Proof-of-Work · Layer&nbsp;1</div>
+      <h1 class="dc-style-15">Discretion,<br>quantum-proof.</h1>
+      <p class="dc-style-16">Private digital cash for a post-quantum world. Discrete is a standalone proof-of-work chain where ownership is sealed by post-quantum signatures.</p>
+      <div id="dcHeroBtns" class="dc-style-17">
+        <a href="#download" class="dc-style-18 dc-hover-3">Download wallet</a>
+        <a href="#" class="dc-style-19 dc-hover-4">Read whitepaper</a>
+      </div>
+    </div>
+
+    <!-- hero mark (post-quantum coin) -->
+    <div data-reveal class="dc-style-20">
+      <div id="heroLogo" class="dc-style-21">
+        <div class="dc-style-22"></div>
+        <img src="assets/coin-8.png" alt="Discrete — post-quantum digital cash coin" class="dc-style-23">
+      </div>
+    </div>
+    </div>
+
+    <!-- chips -->
+    <div id="dcChips" data-reveal class="dc-style-24">
+      <span class="dc-style-25">CryptoNote lineage</span>
+      <span class="dc-style-25">Pure Post-Quantum</span>
+      <span class="dc-style-25">Stealth addresses</span>
+      <span class="dc-style-25">ASIC-resistant PoW</span>
+    </div>
+  </section>
+
+  <!-- ============ THREAT ============ -->
+  <section id="threat" class="dc-style-26">
+    <div class="dc-style-27">
+      <div data-reveal class="dc-style-28">
+        <div class="dc-style-29">The Threat</div>
+        <h2 class="dc-style-30">When the curve breaks,<br>everything breaks.</h2>
+        <p class="dc-style-31">Harvest-now-decrypt-later is only the opening move. Nearly every coin in circulation rests its <em class="dc-style-32">ownership and its emission</em> on elliptic-curve signatures. The day a cryptographically-relevant quantum computer arrives, those signatures can be forged at will — not merely archived data decrypted. Balances can be seized, coinbase rewards counterfeited, and the integrity of issuance itself collapses across an entire ECC chain, all at once.</p>
+      </div>
+
+      <div data-reveal class="dc-style-33">
+        <div class="dc-style-34">
+          <div class="dc-style-35"><span class="dc-style-36"></span>Today's chains</div>
+          <h3 class="dc-style-37">Ownership and emission, forgeable</h3>
+          <p class="dc-style-38">ECDSA and EdDSA decide who owns what — and who may mint new supply. Shor's algorithm recovers private keys from the public keys exposed on-chain forever, letting an adversary forge signatures, drain existing balances, and counterfeit the coinbase. The whole monetary system fails, not just its confidentiality.</p>
+        </div>
+        <div class="dc-style-39">
+          <div class="dc-style-40"><span class="dc-style-41"></span>Discrete</div>
+          <h3 class="dc-style-42">Quantum-resistant from genesis</h3>
+          <p class="dc-style-43">No elliptic curves to break. Discrete signs ownership and authorizes emission with post-quantum cryptography from the first block — so neither your coins nor the supply can be forged, today or after a quantum adversary arrives.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="dc-style-44">
+    <div data-reveal class="dc-style-45">
+      <div class="dc-style-46">Mechanics</div>
+      <h2 class="dc-style-47">Ownership you can't unwind.<br>Receiving built for privacy.</h2>
+    </div>
+
+    <div data-reveal class="dc-style-48">
+      <div class="dc-style-49 dc-hover-5">
+        <div class="dc-style-50">01</div>
+        <h3 class="dc-style-51">Post-quantum ownership</h3>
+        <p class="dc-style-52">Accounts are anchored to post-quantum signatures rather than elliptic curves. Your coins remain provably yours even against an adversary holding a quantum computer.</p>
+      </div>
+      <div class="dc-style-49 dc-hover-5">
+        <div class="dc-style-50">02</div>
+        <h3 class="dc-style-51">Short account IDs</h3>
+        <p class="dc-style-52">Register a short alias on-chain and share it instead of a very long address. Payments still fan out to one-time stealth outputs, so a memorable identifier never costs you receiving privacy.</p>
+      </div>
+      <div class="dc-style-49 dc-hover-5">
+        <div class="dc-style-50">03</div>
+        <h3 class="dc-style-51">One CPU, one vote</h3>
+        <p class="dc-style-52">Proof-of-work tuned for commodity CPUs and built to resist ASICs, pools, and botnet farms — a non-outsourceable design that keeps issuance with solo miners rather than a few industrial operators.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DOWNLOAD ============ -->
+  <section id="download" class="dc-style-26">
+    <div class="dc-style-53">
+      <div data-reveal class="dc-style-28">
+        <div class="dc-style-46">Download</div>
+        <h2 class="dc-style-54">Run Discrete your way.</h2>
+        <p class="dc-style-31">Every client is open source. Verify the build, read the code, or just grab a wallet and start.</p>
+      </div>
+
+      <div data-reveal class="dc-style-55">
+        <!-- GUI Wallet -->
+        <div class="dc-style-56">
+          <div class="dc-style-57">GUI Wallet</div>
+          <h3 class="dc-style-58">Desktop wallet</h3>
+          <p class="dc-style-59">Full node and wallet in one app for Windows, macOS, and Linux. Send, receive, and mine with a click.</p>
+          <div class="dc-style-60">
+            <a href="#" class="dc-style-61 dc-hover-3">Download</a>
+            <a href="#" class="dc-style-62 dc-hover-1">Source code ↗</a>
+          </div>
+        </div>
+        <!-- CLI Suite -->
+        <div class="dc-style-56">
+          <div class="dc-style-57">CLI Suite</div>
+          <h3 class="dc-style-58">Daemon &amp; tools</h3>
+          <p class="dc-style-59">Headless daemon, wallet CLI, and miner for operators and power users. Scriptable, auditable, server-ready.</p>
+          <div class="dc-style-60">
+            <a href="#" class="dc-style-61 dc-hover-3">Download</a>
+            <a href="#" class="dc-style-62 dc-hover-1">Source code ↗</a>
+          </div>
+        </div>
+        <!-- Web / Mobile -->
+        <div class="dc-style-56">
+          <div class="dc-style-63">Web / Mobile</div>
+          <h3 class="dc-style-58">Light wallet</h3>
+          <p class="dc-style-59">Lightweight wallet for the browser, iOS, and Android. Keys stay on your device — coming alongside mainnet.</p>
+          <div class="dc-style-60">
+            <a href="#" class="dc-style-64 dc-hover-4">Coming soon</a>
+            <a href="#" class="dc-style-62 dc-hover-1">Source code ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROADMAP ============ -->
+  <section id="roadmap" class="dc-style-26">
+    <div class="dc-style-53">
+      <div data-reveal class="dc-style-65">
+        <div class="dc-style-46">Roadmap</div>
+        <h2 class="dc-style-54">Privacy, shipped in phases.</h2>
+        <p class="dc-style-31">Discrete launches with hardened ownership and ships deeper privacy guarantees as the protocol matures — each phase opaque to the one before it.</p>
+      </div>
+
+      <div data-reveal class="dc-style-66">
+        <!-- phase 1 -->
+        <div class="dc-style-67">
+          <div class="dc-style-68">
+            <span class="dc-style-69">Phase 01</span>
+            <span class="dc-style-70">Now</span>
+          </div>
+          <h3 class="dc-style-71">Foundation</h3>
+          <ul class="dc-style-72">
+            <li class="dc-style-73"><span class="dc-style-74"></span>Proof-of-work mainnet</li>
+            <li class="dc-style-73"><span class="dc-style-74"></span>Post-quantum account ownership</li>
+            <li class="dc-style-73"><span class="dc-style-74"></span>Stealth one-time addresses</li>
+          </ul>
+        </div>
+        <!-- phase 2 -->
+        <div class="dc-style-75">
+          <div class="dc-style-68">
+            <span class="dc-style-76">Phase 02</span>
+            <span class="dc-style-77">Next</span>
+          </div>
+          <h3 class="dc-style-78">Hidden amounts</h3>
+          <ul class="dc-style-72">
+            <li class="dc-style-79"><span class="dc-style-80"></span>Confidential transaction values</li>
+            <li class="dc-style-79"><span class="dc-style-80"></span>Balances become opaque on-chain</li>
+            <li class="dc-style-79"><span class="dc-style-80"></span>Range proofs, post-quantum safe</li>
+          </ul>
+        </div>
+        <!-- phase 3 -->
+        <div class="dc-style-75">
+          <div class="dc-style-68">
+            <span class="dc-style-76">Phase 03</span>
+            <span class="dc-style-77">Later</span>
+          </div>
+          <h3 class="dc-style-78">Spend privacy</h3>
+          <ul class="dc-style-72">
+            <li class="dc-style-79"><span class="dc-style-80"></span>Untraceable spends</li>
+            <li class="dc-style-79"><span class="dc-style-80"></span>Sender concealed alongside receiver</li>
+            <li class="dc-style-79"><span class="dc-style-80"></span>Full transaction confidentiality</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPECS ============ -->
+  <section id="specs" class="dc-style-81">
+    <div class="dc-style-82">
+      <div data-reveal>
+        <div class="dc-style-46">Specification</div>
+        <h2 class="dc-style-83">Built like cash.<br>Hardened like a vault.</h2>
+        <p class="dc-style-84">A focused set of primitives — proven, conservative, and post-quantum by default. Figures below describe the proposed protocol and may evolve before mainnet.</p>
+      </div>
+
+      <div data-reveal class="dc-style-85">
+        <div class="dc-style-86">
+          <span class="dc-style-76">Consensus</span>
+          <span class="dc-style-87">Proof of Work</span>
+        </div>
+        <div class="dc-style-86">
+          <span class="dc-style-76">Lineage</span>
+          <span class="dc-style-87">CryptoNote — post-quantum redesign</span>
+        </div>
+        <div class="dc-style-86">
+          <span class="dc-style-76">Signatures</span>
+          <span class="dc-style-87">Post-quantum (lattice / hash-based)</span>
+        </div>
+        <div class="dc-style-86">
+          <span class="dc-style-76">Mining</span>
+          <span class="dc-style-87">CPU-only · non-outsourceable · ASIC & pool resistant</span>
+        </div>
+        <div class="dc-style-86">
+          <span class="dc-style-76">Receiving</span>
+          <span class="dc-style-87">Stealth one-time addresses</span>
+        </div>
+        <div class="dc-style-86">
+          <span class="dc-style-76">Account IDs</span>
+          <span class="dc-style-87">Short · on-chain registered aliases</span>
+        </div>
+        <div class="dc-style-86">
+          <span class="dc-style-76">Emission</span>
+          <span class="dc-style-87">Initial curve → 2%/yr tail</span>
+        </div>
+        <div class="dc-style-86">
+          <span class="dc-style-76">Privacy path</span>
+          <span class="dc-style-87">Hidden amounts → spend privacy</span>
+        </div>
+        <div class="dc-style-88">
+          <span class="dc-style-76">Status</span>
+          <span class="dc-style-89">Proposed · in development</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA STRIP ============ -->
+  <section class="dc-style-90">
+    <div data-reveal class="dc-style-91">
+      <h2 class="dc-style-92">Privacy isn't a feature. It's the foundation.</h2>
+      <p class="dc-style-93">Read the protocol, audit the approach, or spin up a node and help secure the network.</p>
+      <div class="dc-style-94">
+        <a href="#" class="dc-style-95 dc-hover-3">Read the whitepaper</a>
+        <a href="#" class="dc-style-96 dc-hover-4">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="dc-style-97">
+    <div class="dc-style-98">
+      <div>
+        <a href="#top" class="dc-style-99">
+          <img src="assets/logo-solid.svg" alt="Discrete logo" width="28" height="28" class="dc-style-100">
+          <span class="dc-style-101">Discrete</span>
+        </a>
+        <p class="dc-style-102">Discretion by Design.</p>
+      </div>
+      <div>
+        <div class="dc-style-103">Protocol</div>
+        <div class="dc-style-104">
+          <a href="#" class="dc-style-105 dc-hover-1">Whitepaper</a>
+          <a href="#roadmap" class="dc-style-105 dc-hover-1">Roadmap</a>
+          <a href="#specs" class="dc-style-105 dc-hover-1">Specification</a>
+        </div>
+      </div>
+      <div>
+        <div class="dc-style-103">Network</div>
+        <div class="dc-style-104">
+          <a href="#" class="dc-style-105 dc-hover-1">Run a node</a>
+          <a href="#" class="dc-style-105 dc-hover-1">Block explorer</a>
+          <a href="#" class="dc-style-105 dc-hover-1">Mining guide</a>
+        </div>
+      </div>
+      <div>
+        <div class="dc-style-103">Community</div>
+        <div class="dc-style-104">
+          <a href="#" class="dc-style-105 dc-hover-1">GitHub</a>
+          <a href="#" class="dc-style-105 dc-hover-1">Matrix</a>
+          <a href="#" class="dc-style-105 dc-hover-1">X / Nostr</a>
+        </div>
+      </div>
+    </div>
+    <div class="dc-style-106">
+      <span class="dc-style-107">© 2026 Discrete · proposed protocol</span>
+      <span class="dc-style-108">In active development. Nothing here is financial advice.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;#5FE29F&quot;,&quot;#3FD089&quot;,&quot;#7CE9AE&quot;,&quot;#C8F4D8&quot;],&quot;default&quot;:&quot;#5FE29F&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;revealOnScroll&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;stripesMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#5FE29F' };
+  }
+  componentDidMount() {
+    // hero stripe motion toggle
+    if (this.props.stripesMotion === false) {
+      const s = document.getElementById('heroStripes');
+      if (s) s.classList.add('is-motion-paused');
+    }
+    // scroll reveals
+    const reveal = this.props.revealOnScroll ?? true;
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    if (!reveal || !('IntersectionObserver' in window)) return;
+    const page = document.querySelector('.dc-style-1');
+    if (page) page.classList.add('is-reveal-enabled');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-revealed');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+    els.forEach(el => io.observe(el));
+  }
+}
+</script>
+<template id="__bundler_thumbnail" data-bg-color="#0D1115">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0D1115"></rect>
+    <g transform="translate(600,400)">
+      <circle cx="0" cy="0" r="150" fill="none" stroke="#5FE29F" stroke-width="11"></circle>
+      <g stroke="#5FE29F" stroke-width="16" stroke-linecap="round" opacity="0.92">
+        <line x1="-46" y1="-118" x2="-46" y2="118"></line>
+        <line x1="-16" y1="-128" x2="-16" y2="128"></line>
+        <line x1="14" y1="-128" x2="14" y2="128"></line>
+      </g>
+    </g>
+  </svg>
+</template>
 </body>
 </html>
