@@ -20,7 +20,17 @@
 <link rel="stylesheet" href="assets/styles.css">
 
 <style>
-/* Full-width isometric lattice cloud hero: denser in the center, fading to the edges, lightweight drift only. */
+/* Page-spanning lattice nebula background: static dense line cloud + a few drifting accent lines. */
+.dc-style-1 {
+  position: relative;
+  overflow: hidden;
+}
+
+.dc-style-1 > :not(.dc-global-lattice-bg) {
+  position: relative;
+  z-index: 1;
+}
+
 .dc-style-2 {
   position: relative;
   z-index: 5;
@@ -30,10 +40,107 @@
   box-shadow: none !important;
 }
 
+.dc-global-lattice-bg {
+  position: absolute;
+  inset: -120px 0 auto 0;
+  height: clamp(1450px, 130vw, 2000px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: .98;
+}
+
+.dc-global-lattice-bg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dc-global-lattice-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(95, 226, 159, 0.020) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 226, 159, 0.020) 1px, transparent 1px);
+  background-size: 58px 58px, 58px 58px;
+  opacity: .55;
+}
+
+.dc-global-lattice-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 66% 28%, rgba(95,226,159,.12), rgba(95,226,159,.05) 20%, rgba(95,226,159,.018) 36%, rgba(95,226,159,0) 62%),
+    linear-gradient(90deg, rgba(13,17,21,.92) 0%, rgba(13,17,21,.60) 26%, rgba(13,17,21,.22) 46%, rgba(13,17,21,.08) 72%, rgba(13,17,21,.02) 100%),
+    linear-gradient(180deg, rgba(13,17,21,0) 0%, rgba(13,17,21,0) 56%, rgba(13,17,21,.10) 72%, rgba(13,17,21,.28) 82%, rgba(13,17,21,.58) 92%, rgba(13,17,21,.92) 100%);
+}
+
+.dc-global-lattice-bg .dc-cloud-sparse path,
+.dc-global-lattice-bg .dc-cloud-dense path,
+.dc-global-lattice-bg .dc-cloud-live path {
+  fill: none;
+  stroke: #5FE29F;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dc-global-lattice-bg .dc-cloud-sparse path {
+  stroke-width: 1.05;
+  opacity: .20;
+}
+
+.dc-global-lattice-bg .dc-cloud-dense path {
+  stroke-width: 1.18;
+  opacity: .35;
+}
+
+.dc-global-lattice-bg .dc-cloud-live path {
+  stroke-width: 1.5;
+  opacity: .68;
+}
+
+.dc-global-lattice-bg .dc-facet {
+  fill: url(#dcFacet);
+}
+
+.dc-global-lattice-bg .live-a,
+.dc-global-lattice-bg .live-b,
+.dc-global-lattice-bg .live-c {
+  will-change: transform;
+}
+
+.dc-global-lattice-bg .live-a { animation: dc-live-a 18s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-b { animation: dc-live-b 22s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-c { animation: dc-live-c 20s ease-in-out infinite alternate; }
+
+#heroStripes.is-motion-paused .live-a,
+#heroStripes.is-motion-paused .live-b,
+#heroStripes.is-motion-paused .live-c,
+#heroStripes.is-motion-paused {
+  animation-play-state: paused !important;
+}
+
+@keyframes dc-live-a {
+  0% { transform: translate(-12px, 8px); }
+  100% { transform: translate(12px, -8px); }
+}
+
+@keyframes dc-live-b {
+  0% { transform: translate(10px, 10px); }
+  100% { transform: translate(-10px, -10px); }
+}
+
+@keyframes dc-live-c {
+  0% { transform: translateY(-11px); }
+  100% { transform: translateY(11px); }
+}
+
 .dc-hero-field-section {
   position: relative !important;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible;
   min-height: clamp(720px, 88vh, 960px);
   margin-top: -92px;
   padding-top: 92px;
@@ -45,116 +152,15 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(95, 226, 159, 0.026) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(95, 226, 159, 0.026) 1px, transparent 1px);
-  background-size: 58px 58px, 58px 58px;
-  background-position: center center;
-  opacity: .48;
-}
-
-.dc-hero-field-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
   background:
-    radial-gradient(ellipse at 69% 44%, rgba(95,226,159,.14), rgba(95,226,159,.05) 22%, rgba(95,226,159,.02) 36%, rgba(95,226,159,0) 64%),
-    linear-gradient(90deg, rgba(13,17,21,.80) 0%, rgba(13,17,21,.50) 28%, rgba(13,17,21,.18) 52%, rgba(13,17,21,.08) 100%),
-    linear-gradient(180deg, rgba(13,17,21,0) 0%, rgba(13,17,21,0) 70%, rgba(13,17,21,.30) 84%, rgba(13,17,21,.88) 100%);
+    linear-gradient(90deg, rgba(13,17,21,.38) 0%, rgba(13,17,21,.18) 28%, rgba(13,17,21,.03) 52%, rgba(13,17,21,0) 100%),
+    linear-gradient(180deg, rgba(13,17,21,.08) 0%, rgba(13,17,21,0) 34%, rgba(13,17,21,0) 100%);
 }
 
 .dc-hero-field-section > .dc-style-12,
 .dc-hero-field-section > #dcChips {
   position: relative;
-  z-index: 3;
-}
-
-.dc-hero-field {
-  --field-accent: #5FE29F;
-  position: absolute;
   z-index: 2;
-  inset: -5% -4% -18% -4%;
-  pointer-events: none;
-  opacity: .98;
-  contain: layout paint;
-}
-
-.dc-hero-field svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.dc-hero-field .dc-cloud-sparse path,
-.dc-hero-field .dc-cloud-dense path,
-.dc-hero-field .dc-cloud-accent path {
-  fill: none;
-  stroke: var(--field-accent);
-  vector-effect: non-scaling-stroke;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.dc-hero-field .dc-cloud-sparse path {
-  stroke-width: 1.08;
-  opacity: .56;
-}
-
-.dc-hero-field .dc-cloud-dense path {
-  stroke-width: 1.18;
-  opacity: .74;
-}
-
-.dc-hero-field .dc-cloud-accent path {
-  stroke-width: 1.38;
-  opacity: .86;
-}
-
-.dc-hero-field .dc-cloud-vertical path {
-  opacity: .68;
-}
-
-.dc-hero-field .dc-facet {
-  fill: url(#dcFacet);
-}
-
-.dc-hero-field .drift-a,
-.dc-hero-field .drift-b,
-.dc-hero-field .drift-c {
-  transform-box: fill-box;
-  transform-origin: center;
-  will-change: transform;
-}
-
-.dc-hero-field .drift-a { animation: dc-cloud-drift-a 26s ease-in-out infinite alternate; }
-.dc-hero-field .drift-b { animation: dc-cloud-drift-b 31s ease-in-out infinite alternate; }
-.dc-hero-field .drift-c { animation: dc-cloud-drift-c 29s ease-in-out infinite alternate; }
-
-#heroStripes.is-motion-paused .drift-a,
-#heroStripes.is-motion-paused .drift-b,
-#heroStripes.is-motion-paused .drift-c,
-#heroStripes.is-motion-paused {
-  animation-play-state: paused !important;
-}
-
-@keyframes dc-cloud-drift-a {
-  0% { transform: translate(-10px, 6px); }
-  50% { transform: translate(0px, 0px); }
-  100% { transform: translate(10px, -6px); }
-}
-
-@keyframes dc-cloud-drift-b {
-  0% { transform: translate(8px, 8px); }
-  50% { transform: translate(0px, 0px); }
-  100% { transform: translate(-8px, -8px); }
-}
-
-@keyframes dc-cloud-drift-c {
-  0% { transform: translate(0px, -8px); }
-  50% { transform: translate(0px, 0px); }
-  100% { transform: translate(0px, 8px); }
 }
 
 .dc-hero-art-slot {
@@ -162,38 +168,54 @@
   pointer-events: none;
 }
 
+#dcHeroField {
+  display: none !important;
+}
+
 @media (max-width: 860px) {
+  .dc-global-lattice-bg {
+    inset: -80px 0 auto 0;
+    height: 1250px;
+  }
+
+  .dc-global-lattice-bg::before {
+    opacity: .34;
+  }
+
+  .dc-global-lattice-bg::after {
+    background:
+      radial-gradient(ellipse at 68% 26%, rgba(95,226,159,.08), rgba(95,226,159,.03) 22%, rgba(95,226,159,0) 58%),
+      linear-gradient(90deg, rgba(13,17,21,.88) 0%, rgba(13,17,21,.44) 44%, rgba(13,17,21,.12) 72%, rgba(13,17,21,.02) 100%),
+      linear-gradient(180deg, rgba(13,17,21,0) 0%, rgba(13,17,21,.10) 68%, rgba(13,17,21,.84) 100%);
+  }
+
+  .dc-global-lattice-bg .dc-cloud-sparse path {
+    opacity: .15;
+  }
+
+  .dc-global-lattice-bg .dc-cloud-dense path {
+    opacity: .28;
+  }
+
+  .dc-global-lattice-bg .dc-cloud-live path {
+    opacity: .52;
+  }
+
   .dc-hero-field-section {
     min-height: auto;
     margin-top: -76px;
     padding-top: 76px;
   }
 
-  .dc-hero-field {
-    inset: -2% -24% -16% -10%;
-    opacity: .90;
-  }
-
   .dc-hero-art-slot {
     display: none;
-  }
-
-  .dc-hero-field-section::before {
-    opacity: .34;
-  }
-
-  .dc-hero-field-section::after {
-    background:
-      radial-gradient(ellipse at 70% 42%, rgba(95,226,159,.10), rgba(95,226,159,.035) 24%, rgba(95,226,159,0) 60%),
-      linear-gradient(180deg, rgba(13,17,21,.06) 0%, rgba(13,17,21,.18) 38%, rgba(13,17,21,.88) 100%),
-      linear-gradient(90deg, rgba(13,17,21,.58) 0%, rgba(13,17,21,.20) 46%, rgba(13,17,21,.06) 100%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dc-hero-field .drift-a,
-  .dc-hero-field .drift-b,
-  .dc-hero-field .drift-c {
+  .dc-global-lattice-bg .live-a,
+  .dc-global-lattice-bg .live-b,
+  .dc-global-lattice-bg .live-c {
     animation: none !important;
   }
 }
@@ -202,6 +224,197 @@
 </helmet>
 
 <div class="dc-style-1">
+
+  <div class="dc-global-lattice-bg" aria-hidden="true">
+      <svg id="heroStripes" viewBox="0 0 1800 1800" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="dcFacet" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#5FE29F" stop-opacity=".10"/>
+            <stop offset="1" stop-color="#5FE29F" stop-opacity=".012"/>
+          </linearGradient>
+          <radialGradient id="cloudFade" cx="66%" cy="28%" r="48%">
+            <stop offset="0%" stop-color="white" stop-opacity="1"/>
+            <stop offset="34%" stop-color="white" stop-opacity=".92"/>
+            <stop offset="58%" stop-color="white" stop-opacity=".56"/>
+            <stop offset="78%" stop-color="white" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </radialGradient>
+          <mask id="cloudMask">
+            <rect width="100%" height="100%" fill="black"/>
+            <rect width="100%" height="100%" fill="url(#cloudFade)"/>
+          </mask>
+        </defs>
+
+        <g mask="url(#cloudMask)">
+          <g class="dc-cloud-facets">
+            <polygon class="dc-facet" points="920,185 1180,60 1440,185 1180,312" opacity=".34"/>
+            <polygon class="dc-facet" points="660,340 920,185 1180,312 920,462" opacity=".18"/>
+            <polygon class="dc-facet" points="1180,312 1440,185 1700,340 1440,488" opacity=".18"/>
+            <polygon class="dc-facet" points="920,462 1180,312 1440,488 1180,632" opacity=".13"/>
+            <polygon class="dc-facet" points="720,625 980,492 1240,630 980,772" opacity=".08"/>
+          </g>
+
+          <g class="dc-cloud-static dc-cloud-sparse">
+            <path d="M61.1 -861.9 L2918.9 788.1"/>
+            <path d="M16.1 -784.0 L2873.9 866.0"/>
+            <path d="M-23.9 -714.7 L2833.9 935.3"/>
+            <path d="M-58.9 -654.1 L2798.9 995.9"/>
+            <path d="M-88.9 -602.1 L2768.9 1047.9"/>
+            <path d="M-116.4 -554.5 L2741.4 1095.5"/>
+            <path d="M-138.9 -515.5 L2718.9 1134.5"/>
+            <path d="M-158.9 -480.9 L2698.9 1169.1"/>
+            <path d="M-176.4 -450.6 L2681.4 1199.4"/>
+            <path d="M-192.9 -422.0 L2664.9 1228.0"/>
+            <path d="M-207.9 -396.0 L2649.9 1254.0"/>
+            <path d="M-220.9 -373.5 L2636.9 1276.5"/>
+            <path d="M-232.9 -352.7 L2624.9 1297.3"/>
+            <path d="M-248.9 -325.0 L2608.9 1325.0"/>
+            <path d="M-264.9 -297.3 L2592.9 1352.7"/>
+            <path d="M-276.9 -276.5 L2580.9 1373.5"/>
+            <path d="M-289.9 -254.0 L2567.9 1396.0"/>
+            <path d="M-304.9 -228.0 L2552.9 1422.0"/>
+            <path d="M-321.4 -199.4 L2536.4 1450.6"/>
+            <path d="M-338.9 -169.1 L2518.9 1480.9"/>
+            <path d="M-358.9 -134.5 L2498.9 1515.5"/>
+            <path d="M-381.4 -95.5 L2476.4 1554.5"/>
+            <path d="M-408.9 -47.9 L2448.9 1602.1"/>
+            <path d="M-438.9 4.1 L2418.9 1654.1"/>
+            <path d="M-473.9 64.7 L2383.9 1714.7"/>
+            <path d="M-513.9 134.0 L2343.9 1784.0"/>
+            <path d="M-558.9 211.9 L2298.9 1861.9"/>
+            <path d="M2918.9 211.9 L61.1 1861.9"/>
+            <path d="M2873.9 134.0 L16.1 1784.0"/>
+            <path d="M2833.9 64.7 L-23.9 1714.7"/>
+            <path d="M2798.9 4.1 L-58.9 1654.1"/>
+            <path d="M2768.9 -47.9 L-88.9 1602.1"/>
+            <path d="M2741.4 -95.5 L-116.4 1554.5"/>
+            <path d="M2718.9 -134.5 L-138.9 1515.5"/>
+            <path d="M2698.9 -169.1 L-158.9 1480.9"/>
+            <path d="M2681.4 -199.4 L-176.4 1450.6"/>
+            <path d="M2664.9 -228.0 L-192.9 1422.0"/>
+            <path d="M2649.9 -254.0 L-207.9 1396.0"/>
+            <path d="M2636.9 -276.5 L-220.9 1373.5"/>
+            <path d="M2624.9 -297.3 L-232.9 1352.7"/>
+            <path d="M2608.9 -325.0 L-248.9 1325.0"/>
+            <path d="M2592.9 -352.7 L-264.9 1297.3"/>
+            <path d="M2580.9 -373.5 L-276.9 1276.5"/>
+            <path d="M2567.9 -396.0 L-289.9 1254.0"/>
+            <path d="M2552.9 -422.0 L-304.9 1228.0"/>
+            <path d="M2536.4 -450.6 L-321.4 1199.4"/>
+            <path d="M2518.9 -480.9 L-338.9 1169.1"/>
+            <path d="M2498.9 -515.5 L-358.9 1134.5"/>
+            <path d="M2476.4 -554.5 L-381.4 1095.5"/>
+            <path d="M2448.9 -602.1 L-408.9 1047.9"/>
+            <path d="M2418.9 -654.1 L-438.9 995.9"/>
+            <path d="M2383.9 -714.7 L-473.9 935.3"/>
+            <path d="M2343.9 -784.0 L-513.9 866.0"/>
+            <path d="M2298.9 -861.9 L-558.9 788.1"/>
+            <path d="M1640.0 -900.0 L1640.0 1900.0"/>
+            <path d="M1570.0 -900.0 L1570.0 1900.0"/>
+            <path d="M1510.0 -900.0 L1510.0 1900.0"/>
+            <path d="M1458.0 -900.0 L1458.0 1900.0"/>
+            <path d="M1412.0 -900.0 L1412.0 1900.0"/>
+            <path d="M1372.0 -900.0 L1372.0 1900.0"/>
+            <path d="M1336.0 -900.0 L1336.0 1900.0"/>
+            <path d="M1304.0 -900.0 L1304.0 1900.0"/>
+            <path d="M1275.0 -900.0 L1275.0 1900.0"/>
+            <path d="M1248.0 -900.0 L1248.0 1900.0"/>
+            <path d="M1222.0 -900.0 L1222.0 1900.0"/>
+            <path d="M1180.0 -900.0 L1180.0 1900.0"/>
+            <path d="M1138.0 -900.0 L1138.0 1900.0"/>
+            <path d="M1112.0 -900.0 L1112.0 1900.0"/>
+            <path d="M1085.0 -900.0 L1085.0 1900.0"/>
+            <path d="M1056.0 -900.0 L1056.0 1900.0"/>
+            <path d="M1024.0 -900.0 L1024.0 1900.0"/>
+            <path d="M988.0 -900.0 L988.0 1900.0"/>
+            <path d="M948.0 -900.0 L948.0 1900.0"/>
+            <path d="M902.0 -900.0 L902.0 1900.0"/>
+            <path d="M850.0 -900.0 L850.0 1900.0"/>
+            <path d="M790.0 -900.0 L790.0 1900.0"/>
+            <path d="M720.0 -900.0 L720.0 1900.0"/>
+          </g>
+
+          <g class="dc-cloud-static dc-cloud-dense">
+            <path d="M-118.9 -550.2 L2738.9 1099.8"/>
+            <path d="M-136.4 -519.9 L2721.4 1130.1"/>
+            <path d="M-153.9 -489.5 L2703.9 1160.5"/>
+            <path d="M-168.9 -463.6 L2688.9 1186.4"/>
+            <path d="M-182.9 -439.3 L2674.9 1210.7"/>
+            <path d="M-195.9 -416.8 L2661.9 1233.2"/>
+            <path d="M-207.9 -396.0 L2649.9 1254.0"/>
+            <path d="M-218.9 -377.0 L2638.9 1273.0"/>
+            <path d="M-228.9 -359.6 L2628.9 1290.4"/>
+            <path d="M-237.9 -344.1 L2619.9 1305.9"/>
+            <path d="M-259.9 -305.9 L2597.9 1344.1"/>
+            <path d="M-268.9 -290.4 L2588.9 1359.6"/>
+            <path d="M-278.9 -273.0 L2578.9 1377.0"/>
+            <path d="M-289.9 -254.0 L2567.9 1396.0"/>
+            <path d="M-301.9 -233.2 L2555.9 1416.8"/>
+            <path d="M-314.9 -210.7 L2542.9 1439.3"/>
+            <path d="M-328.9 -186.4 L2528.9 1463.6"/>
+            <path d="M-343.9 -160.5 L2513.9 1489.5"/>
+            <path d="M-361.4 -130.1 L2496.4 1519.9"/>
+            <path d="M-378.9 -99.8 L2478.9 1550.2"/>
+            <path d="M2738.9 -99.8 L-118.9 1550.2"/>
+            <path d="M2721.4 -130.1 L-136.4 1519.9"/>
+            <path d="M2703.9 -160.5 L-153.9 1489.5"/>
+            <path d="M2688.9 -186.4 L-168.9 1463.6"/>
+            <path d="M2674.9 -210.7 L-182.9 1439.3"/>
+            <path d="M2661.9 -233.2 L-195.9 1416.8"/>
+            <path d="M2649.9 -254.0 L-207.9 1396.0"/>
+            <path d="M2638.9 -273.0 L-218.9 1377.0"/>
+            <path d="M2628.9 -290.4 L-228.9 1359.6"/>
+            <path d="M2619.9 -305.9 L-237.9 1344.1"/>
+            <path d="M2597.9 -344.1 L-259.9 1305.9"/>
+            <path d="M2588.9 -359.6 L-268.9 1290.4"/>
+            <path d="M2578.9 -377.0 L-278.9 1273.0"/>
+            <path d="M2567.9 -396.0 L-289.9 1254.0"/>
+            <path d="M2555.9 -416.8 L-301.9 1233.2"/>
+            <path d="M2542.9 -439.3 L-314.9 1210.7"/>
+            <path d="M2528.9 -463.6 L-328.9 1186.4"/>
+            <path d="M2513.9 -489.5 L-343.9 1160.5"/>
+            <path d="M2496.4 -519.9 L-361.4 1130.1"/>
+            <path d="M2478.9 -550.2 L-378.9 1099.8"/>
+            <path d="M1400.0 -900.0 L1400.0 1900.0"/>
+            <path d="M1370.0 -900.0 L1370.0 1900.0"/>
+            <path d="M1342.0 -900.0 L1342.0 1900.0"/>
+            <path d="M1316.0 -900.0 L1316.0 1900.0"/>
+            <path d="M1292.0 -900.0 L1292.0 1900.0"/>
+            <path d="M1270.0 -900.0 L1270.0 1900.0"/>
+            <path d="M1250.0 -900.0 L1250.0 1900.0"/>
+            <path d="M1232.0 -900.0 L1232.0 1900.0"/>
+            <path d="M1216.0 -900.0 L1216.0 1900.0"/>
+            <path d="M1200.0 -900.0 L1200.0 1900.0"/>
+            <path d="M1160.0 -900.0 L1160.0 1900.0"/>
+            <path d="M1144.0 -900.0 L1144.0 1900.0"/>
+            <path d="M1128.0 -900.0 L1128.0 1900.0"/>
+            <path d="M1110.0 -900.0 L1110.0 1900.0"/>
+            <path d="M1090.0 -900.0 L1090.0 1900.0"/>
+            <path d="M1068.0 -900.0 L1068.0 1900.0"/>
+            <path d="M1044.0 -900.0 L1044.0 1900.0"/>
+            <path d="M1018.0 -900.0 L1018.0 1900.0"/>
+            <path d="M990.0 -900.0 L990.0 1900.0"/>
+            <path d="M960.0 -900.0 L960.0 1900.0"/>
+          </g>
+
+          <g class="dc-cloud-live live-a">
+            <path class="accent" d="M-193.9 -420.3 L2663.9 1229.7"/>
+            <path class="accent" d="M-248.9 -325.0 L2608.9 1325.0"/>
+            <path class="accent" d="M-303.9 -229.7 L2553.9 1420.3"/>
+          </g>
+          <g class="dc-cloud-live live-b">
+            <path class="accent" d="M2668.9 -221.1 L-188.9 1428.9"/>
+            <path class="accent" d="M2608.9 -325.0 L-248.9 1325.0"/>
+            <path class="accent" d="M2548.9 -428.9 L-308.9 1221.1"/>
+          </g>
+          <g class="dc-cloud-live live-c">
+            <path class="accent" d="M1270.0 -900.0 L1270.0 1900.0"/>
+            <path class="accent" d="M1180.0 -900.0 L1180.0 1900.0"/>
+            <path class="accent" d="M1090.0 -900.0 L1090.0 1900.0"/>
+          </g>
+        </g>
+      </svg>
+  </div>
 
   <!-- ============ NAV ============ -->
   <header class="dc-style-2">
@@ -225,178 +438,6 @@
   <!-- ============ HERO ============ -->
   <section class="dc-style-11 dc-hero-field-section">
     <!-- abstract full-width discrete-geometry field -->
-    <div id="dcHeroField" class="dc-hero-field" aria-hidden="true">
-      <svg id="heroStripes" viewBox="0 0 1600 980" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="dcFacet" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#5FE29F" stop-opacity=".11"/>
-            <stop offset="1" stop-color="#5FE29F" stop-opacity=".01"/>
-          </linearGradient>
-          <mask id="cloudMaskOuter">
-            <rect width="1600" height="980" fill="black"/>
-            <ellipse cx="1090" cy="430" rx="730" ry="505" fill="white" opacity=".06"/>
-            <ellipse cx="1090" cy="430" rx="660" ry="455" fill="white" opacity=".10"/>
-            <ellipse cx="1090" cy="430" rx="585" ry="405" fill="white" opacity=".16"/>
-            <ellipse cx="1090" cy="430" rx="515" ry="355" fill="white" opacity=".22"/>
-            <ellipse cx="1090" cy="430" rx="445" ry="305" fill="white" opacity=".30"/>
-            <ellipse cx="1090" cy="430" rx="375" ry="255" fill="white" opacity=".42"/>
-            <ellipse cx="1090" cy="430" rx="305" ry="210" fill="white" opacity=".56"/>
-            <ellipse cx="1090" cy="430" rx="235" ry="165" fill="white" opacity=".72"/>
-          </mask>
-          <mask id="cloudMaskInner">
-            <rect width="1600" height="980" fill="black"/>
-            <ellipse cx="1090" cy="430" rx="420" ry="290" fill="white" opacity=".16"/>
-            <ellipse cx="1090" cy="430" rx="345" ry="235" fill="white" opacity=".28"/>
-            <ellipse cx="1090" cy="430" rx="275" ry="190" fill="white" opacity=".44"/>
-            <ellipse cx="1090" cy="430" rx="205" ry="145" fill="white" opacity=".64"/>
-            <ellipse cx="1090" cy="430" rx="145" ry="102" fill="white" opacity=".86"/>
-          </mask>
-        </defs>
-
-        <g class="dc-cloud-facets" mask="url(#cloudMaskOuter)">
-          <polygon class="dc-facet" points="870,220 1090,100 1310,220 1090,340" opacity=".44"/>
-          <polygon class="dc-facet" points="650,350 870,220 1090,340 870,465" opacity=".24"/>
-          <polygon class="dc-facet" points="1090,340 1310,220 1530,350 1310,470" opacity=".24"/>
-          <polygon class="dc-facet" points="870,465 1090,340 1310,470 1090,590" opacity=".18"/>
-          <polygon class="dc-facet" points="650,595 870,465 1090,590 870,716" opacity=".12"/>
-          <polygon class="dc-facet" points="1090,590 1310,470 1530,595 1310,720" opacity=".12"/>
-        </g>
-
-        <g class="drift-a" mask="url(#cloudMaskOuter)">
-          <g class="dc-cloud-sparse"><path d="M147.6 -737.7 L2572.4 662.3"/>
-          <path d="M102.6 -659.7 L2527.4 740.3"/>
-          <path d="M62.6 -590.4 L2487.4 809.6"/>
-          <path d="M27.6 -529.8 L2452.4 870.2"/>
-          <path d="M-2.4 -477.8 L2422.4 922.2"/>
-          <path d="M-27.4 -434.5 L2397.4 965.5"/>
-          <path d="M-49.9 -395.6 L2374.9 1004.4"/>
-          <path d="M-69.9 -360.9 L2354.9 1039.1"/>
-          <path d="M-87.4 -330.6 L2337.4 1069.4"/>
-          <path d="M-102.4 -304.6 L2322.4 1095.4"/>
-          <path d="M-122.4 -270.0 L2302.4 1130.0"/>
-          <path d="M-142.4 -235.4 L2282.4 1164.6"/>
-          <path d="M-157.4 -209.4 L2267.4 1190.6"/>
-          <path d="M-174.9 -179.1 L2249.9 1220.9"/>
-          <path d="M-194.9 -144.4 L2229.9 1255.6"/>
-          <path d="M-217.4 -105.5 L2207.4 1294.5"/>
-          <path d="M-242.4 -62.2 L2182.4 1337.8"/>
-          <path d="M-272.4 -10.2 L2152.4 1389.8"/>
-          <path d="M-307.4 50.4 L2117.4 1450.4"/>
-          <path d="M-347.4 119.7 L2077.4 1519.7"/>
-          <path d="M-392.4 197.7 L2032.4 1597.7"/></g>
-          <g class="dc-cloud-dense" mask="url(#cloudMaskInner)"><path d="M7.6 -495.2 L2432.4 904.8"/>
-          <path d="M-12.4 -460.5 L2412.4 939.5"/>
-          <path d="M-29.9 -430.2 L2394.9 969.8"/>
-          <path d="M-47.4 -399.9 L2377.4 1000.1"/>
-          <path d="M-62.4 -373.9 L2362.4 1026.1"/>
-          <path d="M-74.9 -352.3 L2349.9 1047.7"/>
-          <path d="M-86.4 -332.4 L2338.4 1067.6"/>
-          <path d="M-97.4 -313.3 L2327.4 1086.7"/>
-          <path d="M-107.4 -296.0 L2317.4 1104.0"/>
-          <path d="M-116.4 -280.4 L2308.4 1119.6"/>
-          <path d="M-128.4 -259.6 L2296.4 1140.4"/>
-          <path d="M-137.4 -244.0 L2287.4 1156.0"/>
-          <path d="M-147.4 -226.7 L2277.4 1173.3"/>
-          <path d="M-158.4 -207.6 L2266.4 1192.4"/>
-          <path d="M-169.9 -187.7 L2254.9 1212.3"/>
-          <path d="M-182.4 -166.1 L2242.4 1233.9"/>
-          <path d="M-197.4 -140.1 L2227.4 1259.9"/>
-          <path d="M-214.9 -109.8 L2209.9 1290.2"/>
-          <path d="M-232.4 -79.5 L2192.4 1320.5"/>
-          <path d="M-252.4 -44.8 L2172.4 1355.2"/></g>
-          <g class="dc-cloud-accent" mask="url(#cloudMaskInner)"><path d="M-67.4 -365.3 L2357.4 1034.7"/>
-          <path d="M-122.4 -270.0 L2302.4 1130.0"/>
-          <path d="M-177.4 -174.7 L2247.4 1225.3"/></g>
-        </g>
-
-        <g class="drift-b" mask="url(#cloudMaskOuter)">
-          <g class="dc-cloud-sparse"><path d="M2572.4 197.7 L147.6 1597.7"/>
-          <path d="M2527.4 119.7 L102.6 1519.7"/>
-          <path d="M2487.4 50.4 L62.6 1450.4"/>
-          <path d="M2452.4 -10.2 L27.6 1389.8"/>
-          <path d="M2422.4 -62.2 L-2.4 1337.8"/>
-          <path d="M2397.4 -105.5 L-27.4 1294.5"/>
-          <path d="M2374.9 -144.4 L-49.9 1255.6"/>
-          <path d="M2354.9 -179.1 L-69.9 1220.9"/>
-          <path d="M2337.4 -209.4 L-87.4 1190.6"/>
-          <path d="M2322.4 -235.4 L-102.4 1164.6"/>
-          <path d="M2302.4 -270.0 L-122.4 1130.0"/>
-          <path d="M2282.4 -304.6 L-142.4 1095.4"/>
-          <path d="M2267.4 -330.6 L-157.4 1069.4"/>
-          <path d="M2249.9 -360.9 L-174.9 1039.1"/>
-          <path d="M2229.9 -395.6 L-194.9 1004.4"/>
-          <path d="M2207.4 -434.5 L-217.4 965.5"/>
-          <path d="M2182.4 -477.8 L-242.4 922.2"/>
-          <path d="M2152.4 -529.8 L-272.4 870.2"/>
-          <path d="M2117.4 -590.4 L-307.4 809.6"/>
-          <path d="M2077.4 -659.7 L-347.4 740.3"/>
-          <path d="M2032.4 -737.7 L-392.4 662.3"/></g>
-          <g class="dc-cloud-dense" mask="url(#cloudMaskInner)"><path d="M2432.4 -44.8 L7.6 1355.2"/>
-          <path d="M2412.4 -79.5 L-12.4 1320.5"/>
-          <path d="M2394.9 -109.8 L-29.9 1290.2"/>
-          <path d="M2377.4 -140.1 L-47.4 1259.9"/>
-          <path d="M2362.4 -166.1 L-62.4 1233.9"/>
-          <path d="M2349.9 -187.7 L-74.9 1212.3"/>
-          <path d="M2338.4 -207.6 L-86.4 1192.4"/>
-          <path d="M2327.4 -226.7 L-97.4 1173.3"/>
-          <path d="M2317.4 -244.0 L-107.4 1156.0"/>
-          <path d="M2308.4 -259.6 L-116.4 1140.4"/>
-          <path d="M2296.4 -280.4 L-128.4 1119.6"/>
-          <path d="M2287.4 -296.0 L-137.4 1104.0"/>
-          <path d="M2277.4 -313.3 L-147.4 1086.7"/>
-          <path d="M2266.4 -332.4 L-158.4 1067.6"/>
-          <path d="M2254.9 -352.3 L-169.9 1047.7"/>
-          <path d="M2242.4 -373.9 L-182.4 1026.1"/>
-          <path d="M2227.4 -399.9 L-197.4 1000.1"/>
-          <path d="M2209.9 -430.2 L-214.9 969.8"/>
-          <path d="M2192.4 -460.5 L-232.4 939.5"/>
-          <path d="M2172.4 -495.2 L-252.4 904.8"/></g>
-          <g class="dc-cloud-accent" mask="url(#cloudMaskInner)"><path d="M2357.4 -174.7 L-67.4 1225.3"/>
-          <path d="M2302.4 -270.0 L-122.4 1130.0"/>
-          <path d="M2247.4 -365.3 L-177.4 1034.7"/></g>
-        </g>
-
-        <g class="drift-c" mask="url(#cloudMaskOuter)">
-          <g class="dc-cloud-sparse dc-cloud-vertical"><path d="M1510.0 -670.0 L1510.0 1530.0"/>
-          <path d="M1420.0 -670.0 L1420.0 1530.0"/>
-          <path d="M1350.0 -670.0 L1350.0 1530.0"/>
-          <path d="M1290.0 -670.0 L1290.0 1530.0"/>
-          <path d="M1240.0 -670.0 L1240.0 1530.0"/>
-          <path d="M1200.0 -670.0 L1200.0 1530.0"/>
-          <path d="M1165.0 -670.0 L1165.0 1530.0"/>
-          <path d="M1135.0 -670.0 L1135.0 1530.0"/>
-          <path d="M1090.0 -670.0 L1090.0 1530.0"/>
-          <path d="M1045.0 -670.0 L1045.0 1530.0"/>
-          <path d="M1015.0 -670.0 L1015.0 1530.0"/>
-          <path d="M980.0 -670.0 L980.0 1530.0"/>
-          <path d="M940.0 -670.0 L940.0 1530.0"/>
-          <path d="M890.0 -670.0 L890.0 1530.0"/>
-          <path d="M830.0 -670.0 L830.0 1530.0"/>
-          <path d="M760.0 -670.0 L760.0 1530.0"/>
-          <path d="M670.0 -670.0 L670.0 1530.0"/></g>
-          <g class="dc-cloud-dense dc-cloud-vertical" mask="url(#cloudMaskInner)"><path d="M1300.0 -670.0 L1300.0 1530.0"/>
-          <path d="M1265.0 -670.0 L1265.0 1530.0"/>
-          <path d="M1230.0 -670.0 L1230.0 1530.0"/>
-          <path d="M1200.0 -670.0 L1200.0 1530.0"/>
-          <path d="M1175.0 -670.0 L1175.0 1530.0"/>
-          <path d="M1150.0 -670.0 L1150.0 1530.0"/>
-          <path d="M1128.0 -670.0 L1128.0 1530.0"/>
-          <path d="M1108.0 -670.0 L1108.0 1530.0"/>
-          <path d="M1072.0 -670.0 L1072.0 1530.0"/>
-          <path d="M1052.0 -670.0 L1052.0 1530.0"/>
-          <path d="M1030.0 -670.0 L1030.0 1530.0"/>
-          <path d="M1005.0 -670.0 L1005.0 1530.0"/>
-          <path d="M980.0 -670.0 L980.0 1530.0"/>
-          <path d="M950.0 -670.0 L950.0 1530.0"/>
-          <path d="M915.0 -670.0 L915.0 1530.0"/>
-          <path d="M880.0 -670.0 L880.0 1530.0"/></g>
-          <g class="dc-cloud-accent dc-cloud-vertical" mask="url(#cloudMaskInner)"><path d="M1180.0 -670.0 L1180.0 1530.0"/>
-          <path d="M1090.0 -670.0 L1090.0 1530.0"/>
-          <path d="M1000.0 -670.0 L1000.0 1530.0"/></g>
-        </g>
-      </svg>
-    </div>
-
     <div class="dc-style-12">
     <div id="dcHeroText" data-reveal class="dc-style-13">
       <div class="dc-style-14">Post-Quantum · Proof-of-Work · Layer&nbsp;1</div>
