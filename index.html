@@ -78,11 +78,20 @@
 
 .dc-global-lattice-bg {
   position: absolute;
-  inset: -120px 0 auto 0;
-  height: clamp(1450px, 130vw, 2000px);
+  --dc-lattice-visual-height: clamp(980px, 88vw, 1320px);
+  --dc-lattice-height: clamp(1120px, 92vw, 1460px);
+  --dc-hero-nav-offset: 73px;
+  --dc-lattice-y-nudge: clamp(24px, 6vh, 58px);
+  top: calc(var(--dc-hero-nav-offset) + ((100svh - var(--dc-hero-nav-offset) - var(--dc-lattice-visual-height)) / 2) + var(--dc-lattice-y-nudge));
+  right: 0;
+  width: min(1460px, 92vw);
+  height: var(--dc-lattice-height);
   z-index: 0;
   pointer-events: none;
   opacity: .98;
+  contain: layout paint;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 74%, rgba(0,0,0,.82) 84%, rgba(0,0,0,.32) 94%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 74%, rgba(0,0,0,.82) 84%, rgba(0,0,0,.32) 94%, transparent 100%);
 }
 
 .dc-global-lattice-bg svg {
@@ -96,10 +105,10 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(95, 226, 159, 0.020) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(95, 226, 159, 0.020) 1px, transparent 1px);
+    linear-gradient(rgba(95, 226, 159, 0.016) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 226, 159, 0.016) 1px, transparent 1px);
   background-size: 58px 58px, 58px 58px;
-  opacity: .55;
+  opacity: .36;
 }
 
 .dc-global-lattice-bg::after {
@@ -107,9 +116,11 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 66% 28%, rgba(95,226,159,.12), rgba(95,226,159,.05) 20%, rgba(95,226,159,.018) 36%, rgba(95,226,159,0) 62%),
-    linear-gradient(90deg, rgba(13,17,21,.92) 0%, rgba(13,17,21,.60) 26%, rgba(13,17,21,.22) 46%, rgba(13,17,21,.08) 72%, rgba(13,17,21,.02) 100%),
-    linear-gradient(180deg, rgba(13,17,21,0) 0%, rgba(13,17,21,0) 56%, rgba(13,17,21,.10) 72%, rgba(13,17,21,.28) 82%, rgba(13,17,21,.58) 92%, rgba(13,17,21,.92) 100%);
+    radial-gradient(ellipse 3.5% 42% at 54% 42%, rgba(26,232,217,.22), rgba(95,226,159,.10) 34%, rgba(95,226,159,0) 72%),
+    radial-gradient(ellipse 4.5% 47% at 63% 44%, rgba(95,226,159,.24), rgba(20,217,207,.09) 36%, rgba(95,226,159,0) 74%),
+    radial-gradient(ellipse 3.5% 39% at 72% 41%, rgba(180,255,229,.18), rgba(95,226,159,.07) 35%, rgba(95,226,159,0) 72%),
+    linear-gradient(90deg, rgba(13,17,21,.90) 0%, rgba(13,17,21,.56) 18%, rgba(13,17,21,.24) 36%, rgba(13,17,21,.08) 58%, rgba(13,17,21,.02) 100%),
+    linear-gradient(180deg, rgba(13,17,21,.26) 0%, rgba(13,17,21,.04) 18%, rgba(13,17,21,0) 48%, rgba(13,17,21,.16) 76%, rgba(13,17,21,.62) 100%);
 }
 
 .dc-global-lattice-bg .dc-cloud-sparse path,
@@ -124,17 +135,17 @@
 
 .dc-global-lattice-bg .dc-cloud-sparse path {
   stroke-width: 1.05;
-  opacity: .20;
+  opacity: .18;
 }
 
 .dc-global-lattice-bg .dc-cloud-dense path {
   stroke-width: 1.18;
-  opacity: .35;
+  opacity: .42;
 }
 
 .dc-global-lattice-bg .dc-cloud-live path {
-  stroke-width: 0.5;
-  opacity: .68;
+  stroke-width: 1.1;
+  opacity: .54;
 }
 
 .dc-global-lattice-bg .dc-facet {
@@ -147,9 +158,9 @@
   will-change: transform;
 }
 
-.dc-global-lattice-bg .live-a { animation: dc-live-a 18s ease-in-out infinite alternate; }
-.dc-global-lattice-bg .live-b { animation: dc-live-b 22s ease-in-out infinite alternate; }
-.dc-global-lattice-bg .live-c { animation: dc-live-c 20s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-a { animation: dc-live-a 14s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-b { animation: dc-live-b 18s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-c { animation: dc-live-c 16s ease-in-out infinite alternate; }
 
 #heroStripes.is-motion-paused .live-a,
 #heroStripes.is-motion-paused .live-b,
@@ -159,18 +170,18 @@
 }
 
 @keyframes dc-live-a {
-  0% { transform: translate(-12px, 8px); }
-  100% { transform: translate(12px, -8px); }
+  0% { transform: translate3d(-28px, 18px, 0); }
+  100% { transform: translate3d(30px, -20px, 0); }
 }
 
 @keyframes dc-live-b {
-  0% { transform: translate(10px, 10px); }
-  100% { transform: translate(-10px, -10px); }
+  0% { transform: translate3d(26px, 22px, 0); }
+  100% { transform: translate3d(-28px, -24px, 0); }
 }
 
 @keyframes dc-live-c {
-  0% { transform: translateY(-11px); }
-  100% { transform: translateY(11px); }
+  0% { transform: translate3d(0, -28px, 0); }
+  100% { transform: translate3d(0, 32px, 0); }
 }
 
 .dc-hero-field-section {
@@ -207,19 +218,25 @@
 
 @media (max-width: 860px) {
   .dc-global-lattice-bg {
-    inset: -80px 0 auto 0;
-    height: 1250px;
+    --dc-lattice-visual-height: 760px;
+    --dc-lattice-height: 940px;
+    --dc-hero-nav-offset: 91px;
+    --dc-lattice-y-nudge: 28px;
+    right: -18vw;
+    width: min(690px, 118vw);
   }
 
   .dc-global-lattice-bg::before {
-    opacity: .34;
+    opacity: .18;
   }
 
   .dc-global-lattice-bg::after {
     background:
-      radial-gradient(ellipse at 68% 26%, rgba(95,226,159,.08), rgba(95,226,159,.03) 22%, rgba(95,226,159,0) 58%),
-      linear-gradient(90deg, rgba(13,17,21,.88) 0%, rgba(13,17,21,.44) 44%, rgba(13,17,21,.12) 72%, rgba(13,17,21,.02) 100%),
-      linear-gradient(180deg, rgba(13,17,21,0) 0%, rgba(13,17,21,.10) 68%, rgba(13,17,21,.84) 100%);
+      radial-gradient(ellipse 6% 38% at 53% 43%, rgba(26,232,217,.18), rgba(95,226,159,.07) 34%, rgba(95,226,159,0) 72%),
+      radial-gradient(ellipse 7% 44% at 63% 45%, rgba(95,226,159,.18), rgba(20,217,207,.07) 36%, rgba(95,226,159,0) 74%),
+      radial-gradient(ellipse 6% 36% at 73% 42%, rgba(180,255,229,.13), rgba(95,226,159,.05) 35%, rgba(95,226,159,0) 72%),
+      linear-gradient(90deg, rgba(13,17,21,.88) 0%, rgba(13,17,21,.48) 30%, rgba(13,17,21,.13) 64%, rgba(13,17,21,.02) 100%),
+      linear-gradient(180deg, rgba(13,17,21,.18) 0%, rgba(13,17,21,0) 44%, rgba(13,17,21,.72) 100%);
   }
 
   .dc-global-lattice-bg .dc-cloud-sparse path {
@@ -274,11 +291,11 @@
             <stop offset="0" stop-color="#5FE29F" stop-opacity=".10"/>
             <stop offset="1" stop-color="#5FE29F" stop-opacity=".012"/>
           </linearGradient>
-          <radialGradient id="cloudFade" cx="66%" cy="28%" r="48%">
+          <radialGradient id="cloudFade" cx="50%" cy="52%" r="54%">
             <stop offset="0%" stop-color="white" stop-opacity="1"/>
-            <stop offset="34%" stop-color="white" stop-opacity=".92"/>
-            <stop offset="58%" stop-color="white" stop-opacity=".56"/>
-            <stop offset="78%" stop-color="white" stop-opacity=".18"/>
+            <stop offset="32%" stop-color="white" stop-opacity=".98"/>
+            <stop offset="62%" stop-color="white" stop-opacity=".76"/>
+            <stop offset="85%" stop-color="white" stop-opacity=".30"/>
             <stop offset="100%" stop-color="white" stop-opacity="0"/>
           </radialGradient>
           <mask id="cloudMask">
