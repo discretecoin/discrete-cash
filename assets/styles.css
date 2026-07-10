@@ -44,7 +44,7 @@
   .dc-style-23{position:relative; display:block; width:100%; height:auto; filter:drop-shadow(0 26px 48px rgba(0,0,0,.5));}
   .dc-style-24{position:relative; z-index:2; display:flex; gap:10px; flex-wrap:wrap; margin-top:56px;}
   .dc-style-25{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; color:#C8F4D8; background:rgba(15,61,70,.55); border:1px solid rgba(95,226,159,.18); padding:8px 14px; border-radius:999px;}
-  .dc-style-26{background:#0B1518; border-top:1px solid rgba(154,167,178,.10); border-bottom:1px solid rgba(154,167,178,.10);}
+  .dc-style-26{border-top:1px solid rgba(154,167,178,.10); border-bottom:1px solid rgba(154,167,178,.10);}
   .dc-style-27{max-width:1180px; margin:0 auto; padding:108px 28px;}
   .dc-style-28{max-width:760px; margin-bottom:56px;}
   .dc-style-29{font-family:'Sora',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:#9AA7B2; margin-bottom:20px;}
