@@ -20,12 +20,23 @@
 <link rel="stylesheet" href="assets/styles.css">
 
 <style>
-/* Full-bleed Delaunay field: a discrete-geometry backdrop, not a logo or coin. */
+/* Full-width isometric lattice cloud hero: denser in the center, fading to the edges, lightweight drift only. */
+.dc-style-2 {
+  position: relative;
+  z-index: 5;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
 .dc-hero-field-section {
   position: relative !important;
   isolation: isolate;
   overflow: hidden;
-  min-height: clamp(680px, 82vh, 900px);
+  min-height: clamp(720px, 88vh, 960px);
+  margin-top: -92px;
+  padding-top: 92px;
 }
 
 .dc-hero-field-section::before {
@@ -35,142 +46,154 @@
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(95, 226, 159, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(95, 226, 159, 0.035) 1px, transparent 1px);
-  background-size: 42px 42px;
-  -webkit-mask-image: linear-gradient(90deg, transparent 5%, rgba(0,0,0,.18) 35%, #000 72%);
-  mask-image: linear-gradient(90deg, transparent 5%, rgba(0,0,0,.18) 35%, #000 72%);
+    linear-gradient(rgba(95, 226, 159, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 226, 159, 0.026) 1px, transparent 1px);
+  background-size: 58px 58px, 58px 58px;
+  background-position: center center;
+  opacity: .48;
+}
+
+.dc-hero-field-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 69% 44%, rgba(95,226,159,.14), rgba(95,226,159,.05) 22%, rgba(95,226,159,.02) 36%, rgba(95,226,159,0) 64%),
+    linear-gradient(90deg, rgba(13,17,21,.80) 0%, rgba(13,17,21,.50) 28%, rgba(13,17,21,.18) 52%, rgba(13,17,21,.08) 100%),
+    linear-gradient(180deg, rgba(13,17,21,0) 0%, rgba(13,17,21,0) 70%, rgba(13,17,21,.30) 84%, rgba(13,17,21,.88) 100%);
 }
 
 .dc-hero-field-section > .dc-style-12,
 .dc-hero-field-section > #dcChips {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 
 .dc-hero-field {
   --field-accent: #5FE29F;
   position: absolute;
-  z-index: 1;
-  inset: -10% -14% -18% 24%;
+  z-index: 2;
+  inset: -5% -4% -18% -4%;
   pointer-events: none;
-  opacity: .92;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.28) 23%, #000 51%);
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.28) 23%, #000 51%);
-}
-
-.dc-hero-field::before {
-  content: "";
-  position: absolute;
-  inset: 8% -2% 0 34%;
-  background: radial-gradient(ellipse at 76% 45%, rgba(95,226,159,.17), rgba(95,226,159,.05) 40%, transparent 72%);
-  filter: blur(28px);
+  opacity: .98;
+  contain: layout paint;
 }
 
 .dc-hero-field svg {
   display: block;
   width: 100%;
   height: 100%;
-  overflow: visible;
 }
 
-.dc-hero-field .dc-mesh-base line {
-  stroke: var(--field-accent);
-  stroke-width: .9;
-  vector-effect: non-scaling-stroke;
-}
-
-.dc-hero-field .dc-mesh-nodes circle {
-  fill: var(--field-accent);
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: dc-field-node 8s ease-in-out infinite;
-}
-
-.dc-hero-field .dc-mesh-hot path {
+.dc-hero-field .dc-cloud-sparse path,
+.dc-hero-field .dc-cloud-dense path,
+.dc-hero-field .dc-cloud-accent path {
   fill: none;
   stroke: var(--field-accent);
-  stroke-width: 1.15;
-  stroke-dasharray: 2 10 62 18;
-  stroke-linecap: round;
-  opacity: .62;
   vector-effect: non-scaling-stroke;
-  animation: dc-field-trace 23s linear infinite;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.dc-hero-field .dc-mesh-hot path:nth-child(2) { animation-delay: -7s; opacity: .42; }
-.dc-hero-field .dc-mesh-hot path:nth-child(3) { animation-delay: -13s; opacity: .52; }
-.dc-hero-field .dc-mesh-hot path:nth-child(4) { animation-delay: -18s; opacity: .34; }
+.dc-hero-field .dc-cloud-sparse path {
+  stroke-width: 1.08;
+  opacity: .56;
+}
 
-.dc-hero-field .dc-field-layer-a,
-.dc-hero-field .dc-field-layer-b,
-.dc-hero-field .dc-field-layer-c {
+.dc-hero-field .dc-cloud-dense path {
+  stroke-width: 1.18;
+  opacity: .74;
+}
+
+.dc-hero-field .dc-cloud-accent path {
+  stroke-width: 1.38;
+  opacity: .86;
+}
+
+.dc-hero-field .dc-cloud-vertical path {
+  opacity: .68;
+}
+
+.dc-hero-field .dc-facet {
+  fill: url(#dcFacet);
+}
+
+.dc-hero-field .drift-a,
+.dc-hero-field .drift-b,
+.dc-hero-field .drift-c {
   transform-box: fill-box;
-  transform-origin: 70% 50%;
+  transform-origin: center;
+  will-change: transform;
 }
 
-.dc-hero-field .dc-field-layer-a { animation: dc-field-drift-a 34s ease-in-out infinite alternate; }
-.dc-hero-field .dc-field-layer-b { animation: dc-field-drift-b 49s ease-in-out infinite alternate; }
-.dc-hero-field .dc-field-layer-c { animation: dc-field-drift-c 61s ease-in-out infinite alternate; }
+.dc-hero-field .drift-a { animation: dc-cloud-drift-a 26s ease-in-out infinite alternate; }
+.dc-hero-field .drift-b { animation: dc-cloud-drift-b 31s ease-in-out infinite alternate; }
+.dc-hero-field .drift-c { animation: dc-cloud-drift-c 29s ease-in-out infinite alternate; }
 
-#heroStripes.is-motion-paused *,
+#heroStripes.is-motion-paused .drift-a,
+#heroStripes.is-motion-paused .drift-b,
+#heroStripes.is-motion-paused .drift-c,
 #heroStripes.is-motion-paused {
   animation-play-state: paused !important;
 }
 
-@keyframes dc-field-drift-a {
-  from { transform: translate3d(-10px, -4px, 0) rotate(-.35deg) scale(1.015); }
-  to   { transform: translate3d(18px, 10px, 0) rotate(.45deg) scale(1.03); }
+@keyframes dc-cloud-drift-a {
+  0% { transform: translate(-10px, 6px); }
+  50% { transform: translate(0px, 0px); }
+  100% { transform: translate(10px, -6px); }
 }
 
-@keyframes dc-field-drift-b {
-  from { transform: translate3d(8px, 12px, 0) rotate(.3deg) scale(1.025); }
-  to   { transform: translate3d(-15px, -8px, 0) rotate(-.45deg) scale(1.04); }
+@keyframes dc-cloud-drift-b {
+  0% { transform: translate(8px, 8px); }
+  50% { transform: translate(0px, 0px); }
+  100% { transform: translate(-8px, -8px); }
 }
 
-@keyframes dc-field-drift-c {
-  from { transform: translate3d(-5px, 8px, 0); }
-  to   { transform: translate3d(12px, -12px, 0); }
+@keyframes dc-cloud-drift-c {
+  0% { transform: translate(0px, -8px); }
+  50% { transform: translate(0px, 0px); }
+  100% { transform: translate(0px, 8px); }
 }
 
-@keyframes dc-field-trace { to { stroke-dashoffset: -260; } }
-
-@keyframes dc-field-node {
-  0%, 74%, 100% { opacity: .18; transform: scale(.82); }
-  12% { opacity: .76; transform: scale(1.32); }
-  27% { opacity: .34; transform: scale(1); }
-}
-
-/* Keep the original two-column balance without displaying a contained illustration. */
 .dc-hero-art-slot {
-  min-height: 510px;
+  min-height: 520px;
   pointer-events: none;
 }
 
 @media (max-width: 860px) {
   .dc-hero-field-section {
     min-height: auto;
+    margin-top: -76px;
+    padding-top: 76px;
   }
 
   .dc-hero-field {
-    inset: 12% -68% -12% -8%;
-    opacity: .72;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 18%, #000 48%);
-    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 18%, #000 48%);
-  }
-
-  .dc-hero-field-section::before {
-    opacity: .55;
+    inset: -2% -24% -16% -10%;
+    opacity: .90;
   }
 
   .dc-hero-art-slot {
     display: none;
   }
+
+  .dc-hero-field-section::before {
+    opacity: .34;
+  }
+
+  .dc-hero-field-section::after {
+    background:
+      radial-gradient(ellipse at 70% 42%, rgba(95,226,159,.10), rgba(95,226,159,.035) 24%, rgba(95,226,159,0) 60%),
+      linear-gradient(180deg, rgba(13,17,21,.06) 0%, rgba(13,17,21,.18) 38%, rgba(13,17,21,.88) 100%),
+      linear-gradient(90deg, rgba(13,17,21,.58) 0%, rgba(13,17,21,.20) 46%, rgba(13,17,21,.06) 100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dc-hero-field *,
-  .dc-hero-field svg {
+  .dc-hero-field .drift-a,
+  .dc-hero-field .drift-b,
+  .dc-hero-field .drift-c {
     animation: none !important;
   }
 }
@@ -201,189 +224,175 @@
 
   <!-- ============ HERO ============ -->
   <section class="dc-style-11 dc-hero-field-section">
-
-    <!-- abstract discrete-geometry field -->
+    <!-- abstract full-width discrete-geometry field -->
     <div id="dcHeroField" class="dc-hero-field" aria-hidden="true">
-      <svg id="heroStripes" viewBox="0 0 1320 980" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <svg id="heroStripes" viewBox="0 0 1600 980" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="dcFacet" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#5FE29F" stop-opacity=".55"/>
-            <stop offset="1" stop-color="#5FE29F" stop-opacity=".06"/>
+            <stop offset="0" stop-color="#5FE29F" stop-opacity=".11"/>
+            <stop offset="1" stop-color="#5FE29F" stop-opacity=".01"/>
           </linearGradient>
-          <radialGradient id="dcFieldBloom" cx="77%" cy="48%" r="56%">
-            <stop offset="0" stop-color="#5FE29F" stop-opacity=".105"/>
-            <stop offset=".46" stop-color="#5FE29F" stop-opacity=".025"/>
-            <stop offset="1" stop-color="#5FE29F" stop-opacity="0"/>
-          </radialGradient>
+          <mask id="cloudMaskOuter">
+            <rect width="1600" height="980" fill="black"/>
+            <ellipse cx="1090" cy="430" rx="730" ry="505" fill="white" opacity=".06"/>
+            <ellipse cx="1090" cy="430" rx="660" ry="455" fill="white" opacity=".10"/>
+            <ellipse cx="1090" cy="430" rx="585" ry="405" fill="white" opacity=".16"/>
+            <ellipse cx="1090" cy="430" rx="515" ry="355" fill="white" opacity=".22"/>
+            <ellipse cx="1090" cy="430" rx="445" ry="305" fill="white" opacity=".30"/>
+            <ellipse cx="1090" cy="430" rx="375" ry="255" fill="white" opacity=".42"/>
+            <ellipse cx="1090" cy="430" rx="305" ry="210" fill="white" opacity=".56"/>
+            <ellipse cx="1090" cy="430" rx="235" ry="165" fill="white" opacity=".72"/>
+          </mask>
+          <mask id="cloudMaskInner">
+            <rect width="1600" height="980" fill="black"/>
+            <ellipse cx="1090" cy="430" rx="420" ry="290" fill="white" opacity=".16"/>
+            <ellipse cx="1090" cy="430" rx="345" ry="235" fill="white" opacity=".28"/>
+            <ellipse cx="1090" cy="430" rx="275" ry="190" fill="white" opacity=".44"/>
+            <ellipse cx="1090" cy="430" rx="205" ry="145" fill="white" opacity=".64"/>
+            <ellipse cx="1090" cy="430" rx="145" ry="102" fill="white" opacity=".86"/>
+          </mask>
         </defs>
-        <rect width="1320" height="980" fill="url(#dcFieldBloom)"/>
-        <g class="dc-field-layer-a">
-          <g><polygon points="442.1,372.1 543.7,497.4 344.0,631.3" fill="url(#dcFacet)" opacity="0.028"/>
-              <polygon points="344.0,631.3 710.6,733.5 460.3,866.1" fill="url(#dcFacet)" opacity="0.035"/>
-              <polygon points="543.7,497.4 442.1,372.1 639.9,319.9" fill="url(#dcFacet)" opacity="0.039"/>
-              <polygon points="682.7,546.8 543.7,497.4 639.9,319.9" fill="url(#dcFacet)" opacity="0.049"/>
-              <polygon points="460.3,866.1 696.9,916.0 780.0,1080.0" fill="url(#dcFacet)" opacity="0.052"/>
-              <polygon points="797.6,67.1 564.9,22.7 850.0,-60.0" fill="url(#dcFacet)" opacity="0.062"/>
-              <polygon points="797.6,67.1 836.4,301.9 639.9,319.9" fill="url(#dcFacet)" opacity="0.065"/>
-              <polygon points="696.9,916.0 860.3,772.9 858.0,1033.5" fill="url(#dcFacet)" opacity="0.070"/>
-              <polygon points="836.4,301.9 797.6,67.1 982.5,306.2" fill="url(#dcFacet)" opacity="0.078"/>
-              <polygon points="858.0,1033.5 1136.8,1048.3 780.0,1080.0" fill="url(#dcFacet)" opacity="0.084"/>
-              <polygon points="1037.3,714.3 860.3,772.9 978.2,576.1" fill="url(#dcFacet)" opacity="0.088"/>
-              <polygon points="1002.3,892.7 860.3,772.9 1037.3,714.3" fill="url(#dcFacet)" opacity="0.089"/>
-              <polygon points="797.6,67.1 1120.5,-61.7 982.5,306.2" fill="url(#dcFacet)" opacity="0.089"/>
-              <polygon points="1136.8,1048.3 1280.0,1050.0 780.0,1080.0" fill="url(#dcFacet)" opacity="0.101"/>
-              <polygon points="1002.3,892.7 1037.3,714.3 1234.8,925.2" fill="url(#dcFacet)" opacity="0.104"/>
-              <polygon points="1292.5,561.6 1037.3,714.3 978.2,576.1" fill="url(#dcFacet)" opacity="0.105"/>
-              <polygon points="982.5,306.2 1120.5,-61.7 1220.9,259.4" fill="url(#dcFacet)" opacity="0.106"/>
-              <polygon points="1292.5,561.6 982.5,306.2 1220.9,259.4" fill="url(#dcFacet)" opacity="0.113"/>
-              <polygon points="1292.5,561.6 1258.1,736.5 1037.3,714.3" fill="url(#dcFacet)" opacity="0.116"/>
-              <polygon points="1120.5,-61.7 1272.8,-41.5 1220.9,259.4" fill="url(#dcFacet)" opacity="0.117"/>
-              <polygon points="1136.8,1048.3 1234.8,925.2 1280.0,1050.0" fill="url(#dcFacet)" opacity="0.119"/>
-              <polygon points="1234.8,925.2 1258.1,736.5 1345.0,720.0" fill="url(#dcFacet)" opacity="0.126"/>
-              <polygon points="1292.5,561.6 1220.9,259.4 1360.0,330.0" fill="url(#dcFacet)" opacity="0.127"/>
-              <polygon points="1258.1,736.5 1292.5,561.6 1345.0,720.0" fill="url(#dcFacet)" opacity="0.128"/>
-              <polygon points="1220.9,259.4 1325.0,-30.0 1360.0,330.0" fill="url(#dcFacet)" opacity="0.129"/></g>
-          <g class="dc-mesh-base" fill="none">
-              <line x1="710.6" y1="733.5" x2="344.0" y2="631.3" opacity="0.258"/>
-              <line x1="710.6" y1="733.5" x2="682.7" y2="546.8" opacity="0.335"/>
-              <line x1="710.6" y1="733.5" x2="696.9" y2="916.0" opacity="0.338"/>
-              <line x1="710.6" y1="733.5" x2="860.3" y2="772.9" opacity="0.375"/>
-              <line x1="710.6" y1="733.5" x2="460.3" y2="866.1" opacity="0.284"/>
-              <line x1="710.6" y1="733.5" x2="543.7" y2="497.4" opacity="0.303"/>
-              <line x1="564.9" y1="22.7" x2="797.6" y2="67.1" opacity="0.328"/>
-              <line x1="564.9" y1="22.7" x2="343.0" y2="-50.9" opacity="0.225"/>
-              <line x1="564.9" y1="22.7" x2="475.5" y2="181.4" opacity="0.255"/>
-              <line x1="564.9" y1="22.7" x2="639.9" y2="319.9" opacity="0.292"/>
-              <line x1="564.9" y1="22.7" x2="324.4" y2="101.3" opacity="0.220"/>
-              <line x1="564.9" y1="22.7" x2="410.0" y2="-90.0" opacity="0.240"/>
-              <line x1="564.9" y1="22.7" x2="850.0" y2="-60.0" opacity="0.340"/>
-              <line x1="1292.5" y1="561.6" x2="978.2" y2="576.1" opacity="0.420"/>
-              <line x1="1292.5" y1="561.6" x2="1037.3" y2="714.3" opacity="0.420"/>
-              <line x1="1292.5" y1="561.6" x2="1258.1" y2="736.5" opacity="0.420"/>
-              <line x1="1292.5" y1="561.6" x2="982.5" y2="306.2" opacity="0.420"/>
-              <line x1="1292.5" y1="561.6" x2="1220.9" y2="259.4" opacity="0.420"/>
-              <line x1="1292.5" y1="561.6" x2="1360.0" y2="330.0" opacity="0.420"/>
-              <line x1="1292.5" y1="561.6" x2="1345.0" y2="720.0" opacity="0.420"/>
-              <line x1="978.2" y1="576.1" x2="682.7" y2="546.8" opacity="0.396"/>
-              <line x1="978.2" y1="576.1" x2="1037.3" y2="714.3" opacity="0.420"/>
-              <line x1="978.2" y1="576.1" x2="860.3" y2="772.9" opacity="0.420"/>
-              <line x1="978.2" y1="576.1" x2="836.4" y2="301.9" opacity="0.420"/>
-              <line x1="978.2" y1="576.1" x2="982.5" y2="306.2" opacity="0.420"/>
-              <line x1="797.6" y1="67.1" x2="1120.5" y2="-61.7" opacity="0.420"/>
-              <line x1="797.6" y1="67.1" x2="639.9" y2="319.9" opacity="0.345"/>
-              <line x1="797.6" y1="67.1" x2="836.4" y2="301.9" opacity="0.390"/>
-              <line x1="797.6" y1="67.1" x2="982.5" y2="306.2" opacity="0.420"/>
-              <line x1="797.6" y1="67.1" x2="850.0" y2="-60.0" opacity="0.393"/>
-              <line x1="1234.8" y1="925.2" x2="1037.3" y2="714.3" opacity="0.420"/>
-              <line x1="1234.8" y1="925.2" x2="1258.1" y2="736.5" opacity="0.420"/>
-              <line x1="1234.8" y1="925.2" x2="1002.3" y2="892.7" opacity="0.420"/>
-              <line x1="1234.8" y1="925.2" x2="1136.8" y2="1048.3" opacity="0.420"/>
-              <line x1="1234.8" y1="925.2" x2="1345.0" y2="720.0" opacity="0.420"/>
-              <line x1="1234.8" y1="925.2" x2="1280.0" y2="1050.0" opacity="0.420"/>
-              <line x1="1272.8" y1="-41.5" x2="1120.5" y2="-61.7" opacity="0.420"/>
-              <line x1="1272.8" y1="-41.5" x2="1220.9" y2="259.4" opacity="0.420"/>
-              <line x1="1272.8" y1="-41.5" x2="1325.0" y2="-30.0" opacity="0.420"/>
-              <line x1="344.0" y1="631.3" x2="442.1" y2="372.1" opacity="0.197"/>
-              <line x1="344.0" y1="631.3" x2="134.8" y2="691.5" opacity="0.127"/>
-              <line x1="344.0" y1="631.3" x2="303.4" y2="777.1" opacity="0.165"/>
-              <line x1="344.0" y1="631.3" x2="460.3" y2="866.1" opacity="0.201"/>
-              <line x1="344.0" y1="631.3" x2="543.7" y2="497.4" opacity="0.220"/>
-              <line x1="344.0" y1="631.3" x2="-30.0" y2="350.0" opacity="0.090"/>
-              <line x1="1120.5" y1="-61.7" x2="982.5" y2="306.2" opacity="0.420"/>
-              <line x1="1120.5" y1="-61.7" x2="1220.9" y2="259.4" opacity="0.420"/>
-              <line x1="1120.5" y1="-61.7" x2="410.0" y2="-90.0" opacity="0.366"/>
-              <line x1="1120.5" y1="-61.7" x2="850.0" y2="-60.0" opacity="0.420"/>
-              <line x1="682.7" y1="546.8" x2="639.9" y2="319.9" opacity="0.319"/>
-              <line x1="682.7" y1="546.8" x2="860.3" y2="772.9" opacity="0.369"/>
-              <line x1="682.7" y1="546.8" x2="836.4" y2="301.9" opacity="0.363"/>
-              <line x1="682.7" y1="546.8" x2="543.7" y2="497.4" opacity="0.297"/>
-              <line x1="696.9" y1="916.0" x2="860.3" y2="772.9" opacity="0.372"/>
-              <line x1="696.9" y1="916.0" x2="460.3" y2="866.1" opacity="0.281"/>
-              <line x1="696.9" y1="916.0" x2="858.0" y2="1033.5" opacity="0.372"/>
-              <line x1="696.9" y1="916.0" x2="780.0" y2="1080.0" opacity="0.354"/>
-              <line x1="343.0" y1="-50.9" x2="186.9" y2="18.8" opacity="0.139"/>
-              <line x1="343.0" y1="-50.9" x2="324.4" y2="101.3" opacity="0.170"/>
-              <line x1="343.0" y1="-50.9" x2="20.0" y2="-60.0" opacity="0.101"/>
-              <line x1="343.0" y1="-50.9" x2="410.0" y2="-90.0" opacity="0.189"/>
-              <line x1="442.1" y1="372.1" x2="475.5" y2="181.4" opacity="0.227"/>
-              <line x1="442.1" y1="372.1" x2="639.9" y2="319.9" opacity="0.264"/>
-              <line x1="442.1" y1="372.1" x2="324.4" y2="101.3" opacity="0.192"/>
-              <line x1="442.1" y1="372.1" x2="543.7" y2="497.4" opacity="0.242"/>
-              <line x1="442.1" y1="372.1" x2="-30.0" y2="350.0" opacity="0.112"/>
-              <line x1="1037.3" y1="714.3" x2="1258.1" y2="736.5" opacity="0.420"/>
-              <line x1="1037.3" y1="714.3" x2="860.3" y2="772.9" opacity="0.420"/>
-              <line x1="1037.3" y1="714.3" x2="1002.3" y2="892.7" opacity="0.420"/>
-              <line x1="475.5" y1="181.4" x2="639.9" y2="319.9" opacity="0.272"/>
-              <line x1="475.5" y1="181.4" x2="324.4" y2="101.3" opacity="0.200"/>
-              <line x1="639.9" y1="319.9" x2="836.4" y2="301.9" opacity="0.354"/>
-              <line x1="639.9" y1="319.9" x2="543.7" y2="497.4" opacity="0.287"/>
-              <line x1="1258.1" y1="736.5" x2="1345.0" y2="720.0" opacity="0.420"/>
-              <line x1="860.3" y1="772.9" x2="1002.3" y2="892.7" opacity="0.420"/>
-              <line x1="860.3" y1="772.9" x2="858.0" y2="1033.5" opacity="0.409"/>
-              <line x1="836.4" y1="301.9" x2="982.5" y2="306.2" opacity="0.420"/>
-              <line x1="134.8" y1="691.5" x2="303.4" y2="777.1" opacity="0.118"/>
-              <line x1="134.8" y1="691.5" x2="184.7" y2="1028.8" opacity="0.091"/>
-              <line x1="134.8" y1="691.5" x2="-20.0" y2="760.0" opacity="0.080"/>
-              <line x1="134.8" y1="691.5" x2="-30.0" y2="350.0" opacity="0.080"/>
-              <line x1="982.5" y1="306.2" x2="1220.9" y2="259.4" opacity="0.420"/>
-              <line x1="1002.3" y1="892.7" x2="1136.8" y2="1048.3" opacity="0.420"/>
-              <line x1="1002.3" y1="892.7" x2="858.0" y2="1033.5" opacity="0.420"/>
-              <line x1="1136.8" y1="1048.3" x2="858.0" y2="1033.5" opacity="0.420"/>
-              <line x1="1136.8" y1="1048.3" x2="1280.0" y2="1050.0" opacity="0.420"/>
-              <line x1="1136.8" y1="1048.3" x2="780.0" y2="1080.0" opacity="0.420"/>
-              <line x1="303.4" y1="777.1" x2="460.3" y2="866.1" opacity="0.192"/>
-              <line x1="303.4" y1="777.1" x2="184.7" y2="1028.8" opacity="0.129"/>
-              <line x1="303.4" y1="777.1" x2="250.0" y2="1050.0" opacity="0.144"/>
-              <line x1="1220.9" y1="259.4" x2="1325.0" y2="-30.0" opacity="0.420"/>
-              <line x1="1220.9" y1="259.4" x2="1360.0" y2="330.0" opacity="0.420"/>
-              <line x1="460.3" y1="866.1" x2="780.0" y2="1080.0" opacity="0.300"/>
-              <line x1="460.3" y1="866.1" x2="250.0" y2="1050.0" opacity="0.180"/>
-              <line x1="184.7" y1="1028.8" x2="250.0" y2="1050.0" opacity="0.117"/>
-              <line x1="184.7" y1="1028.8" x2="-20.0" y2="760.0" opacity="0.080"/>
-              <line x1="186.9" y1="18.8" x2="324.4" y2="101.3" opacity="0.134"/>
-              <line x1="186.9" y1="18.8" x2="20.0" y2="-60.0" opacity="0.080"/>
-              <line x1="186.9" y1="18.8" x2="-30.0" y2="350.0" opacity="0.080"/>
-              <line x1="858.0" y1="1033.5" x2="780.0" y2="1080.0" opacity="0.390"/>
-              <line x1="324.4" y1="101.3" x2="-30.0" y2="350.0" opacity="0.085"/>
-              <line x1="20.0" y1="-60.0" x2="410.0" y2="-90.0" opacity="0.116"/>
-              <line x1="20.0" y1="-60.0" x2="-30.0" y2="350.0" opacity="0.080"/>
-              <line x1="410.0" y1="-90.0" x2="850.0" y2="-60.0" opacity="0.305"/>
-              <line x1="1325.0" y1="-30.0" x2="1360.0" y2="330.0" opacity="0.420"/>
-              <line x1="1360.0" y1="330.0" x2="1345.0" y2="720.0" opacity="0.420"/>
-              <line x1="1345.0" y1="720.0" x2="1280.0" y2="1050.0" opacity="0.420"/>
-              <line x1="1280.0" y1="1050.0" x2="780.0" y2="1080.0" opacity="0.420"/>
-              <line x1="780.0" y1="1080.0" x2="250.0" y2="1050.0" opacity="0.252"/>
-              <line x1="-20.0" y1="760.0" x2="-30.0" y2="350.0" opacity="0.080"/>
-          </g>
-        </g>
-        <g class="dc-field-layer-b dc-mesh-hot">
 
-              <path d="M95 745 L335 610 L585 690 L835 520 L1090 610 L1360 430"/>
-              <path d="M210 225 L470 365 L720 205 L980 310 L1260 170"/>
-              <path d="M300 980 L535 790 L805 880 L1050 700 L1340 760"/>
-              <path d="M165 470 L435 520 L690 395 L945 470 L1215 350"/>
-
+        <g class="dc-cloud-facets" mask="url(#cloudMaskOuter)">
+          <polygon class="dc-facet" points="870,220 1090,100 1310,220 1090,340" opacity=".44"/>
+          <polygon class="dc-facet" points="650,350 870,220 1090,340 870,465" opacity=".24"/>
+          <polygon class="dc-facet" points="1090,340 1310,220 1530,350 1310,470" opacity=".24"/>
+          <polygon class="dc-facet" points="870,465 1090,340 1310,470 1090,590" opacity=".18"/>
+          <polygon class="dc-facet" points="650,595 870,465 1090,590 870,716" opacity=".12"/>
+          <polygon class="dc-facet" points="1090,590 1310,470 1530,595 1310,720" opacity=".12"/>
         </g>
-        <g class="dc-field-layer-c dc-mesh-nodes">
-              <circle cx="710.6" cy="733.5" r="3.2" opacity="0.52" style="animation-delay:-0.00s"/>
-              <circle cx="1292.5" cy="561.6" r="2.1" opacity="0.26" style="animation-delay:-1.46s"/>
-              <circle cx="797.6" cy="67.1" r="2.1" opacity="0.26" style="animation-delay:-2.92s"/>
-              <circle cx="1272.8" cy="-41.5" r="2.1" opacity="0.26" style="animation-delay:-4.38s"/>
-              <circle cx="1120.5" cy="-61.7" r="2.1" opacity="0.26" style="animation-delay:-5.84s"/>
-              <circle cx="696.9" cy="916.0" r="3.2" opacity="0.52" style="animation-delay:-0.73s"/>
-              <circle cx="442.1" cy="372.1" r="2.1" opacity="0.26" style="animation-delay:-2.19s"/>
-              <circle cx="475.5" cy="181.4" r="2.1" opacity="0.26" style="animation-delay:-3.65s"/>
-              <circle cx="1258.1" cy="736.5" r="2.1" opacity="0.26" style="animation-delay:-5.11s"/>
-              <circle cx="836.4" cy="301.9" r="2.1" opacity="0.26" style="animation-delay:-0.00s"/>
-              <circle cx="982.5" cy="306.2" r="3.2" opacity="0.52" style="animation-delay:-1.46s"/>
-              <circle cx="1136.8" cy="1048.3" r="2.1" opacity="0.26" style="animation-delay:-2.92s"/>
-              <circle cx="1220.9" cy="259.4" r="2.1" opacity="0.26" style="animation-delay:-4.38s"/>
-              <circle cx="858.0" cy="1033.5" r="2.1" opacity="0.26" style="animation-delay:-0.73s"/>
-              <circle cx="543.7" cy="497.4" r="3.2" opacity="0.52" style="animation-delay:-2.19s"/>
-              <circle cx="410.0" cy="-90.0" r="2.1" opacity="0.26" style="animation-delay:-3.65s"/>
-              <circle cx="1325.0" cy="-30.0" r="2.1" opacity="0.26" style="animation-delay:-5.11s"/>
-              <circle cx="1345.0" cy="720.0" r="2.1" opacity="0.26" style="animation-delay:-0.00s"/>
-              <circle cx="780.0" cy="1080.0" r="2.1" opacity="0.26" style="animation-delay:-1.46s"/>
+
+        <g class="drift-a" mask="url(#cloudMaskOuter)">
+          <g class="dc-cloud-sparse"><path d="M147.6 -737.7 L2572.4 662.3"/>
+          <path d="M102.6 -659.7 L2527.4 740.3"/>
+          <path d="M62.6 -590.4 L2487.4 809.6"/>
+          <path d="M27.6 -529.8 L2452.4 870.2"/>
+          <path d="M-2.4 -477.8 L2422.4 922.2"/>
+          <path d="M-27.4 -434.5 L2397.4 965.5"/>
+          <path d="M-49.9 -395.6 L2374.9 1004.4"/>
+          <path d="M-69.9 -360.9 L2354.9 1039.1"/>
+          <path d="M-87.4 -330.6 L2337.4 1069.4"/>
+          <path d="M-102.4 -304.6 L2322.4 1095.4"/>
+          <path d="M-122.4 -270.0 L2302.4 1130.0"/>
+          <path d="M-142.4 -235.4 L2282.4 1164.6"/>
+          <path d="M-157.4 -209.4 L2267.4 1190.6"/>
+          <path d="M-174.9 -179.1 L2249.9 1220.9"/>
+          <path d="M-194.9 -144.4 L2229.9 1255.6"/>
+          <path d="M-217.4 -105.5 L2207.4 1294.5"/>
+          <path d="M-242.4 -62.2 L2182.4 1337.8"/>
+          <path d="M-272.4 -10.2 L2152.4 1389.8"/>
+          <path d="M-307.4 50.4 L2117.4 1450.4"/>
+          <path d="M-347.4 119.7 L2077.4 1519.7"/>
+          <path d="M-392.4 197.7 L2032.4 1597.7"/></g>
+          <g class="dc-cloud-dense" mask="url(#cloudMaskInner)"><path d="M7.6 -495.2 L2432.4 904.8"/>
+          <path d="M-12.4 -460.5 L2412.4 939.5"/>
+          <path d="M-29.9 -430.2 L2394.9 969.8"/>
+          <path d="M-47.4 -399.9 L2377.4 1000.1"/>
+          <path d="M-62.4 -373.9 L2362.4 1026.1"/>
+          <path d="M-74.9 -352.3 L2349.9 1047.7"/>
+          <path d="M-86.4 -332.4 L2338.4 1067.6"/>
+          <path d="M-97.4 -313.3 L2327.4 1086.7"/>
+          <path d="M-107.4 -296.0 L2317.4 1104.0"/>
+          <path d="M-116.4 -280.4 L2308.4 1119.6"/>
+          <path d="M-128.4 -259.6 L2296.4 1140.4"/>
+          <path d="M-137.4 -244.0 L2287.4 1156.0"/>
+          <path d="M-147.4 -226.7 L2277.4 1173.3"/>
+          <path d="M-158.4 -207.6 L2266.4 1192.4"/>
+          <path d="M-169.9 -187.7 L2254.9 1212.3"/>
+          <path d="M-182.4 -166.1 L2242.4 1233.9"/>
+          <path d="M-197.4 -140.1 L2227.4 1259.9"/>
+          <path d="M-214.9 -109.8 L2209.9 1290.2"/>
+          <path d="M-232.4 -79.5 L2192.4 1320.5"/>
+          <path d="M-252.4 -44.8 L2172.4 1355.2"/></g>
+          <g class="dc-cloud-accent" mask="url(#cloudMaskInner)"><path d="M-67.4 -365.3 L2357.4 1034.7"/>
+          <path d="M-122.4 -270.0 L2302.4 1130.0"/>
+          <path d="M-177.4 -174.7 L2247.4 1225.3"/></g>
+        </g>
+
+        <g class="drift-b" mask="url(#cloudMaskOuter)">
+          <g class="dc-cloud-sparse"><path d="M2572.4 197.7 L147.6 1597.7"/>
+          <path d="M2527.4 119.7 L102.6 1519.7"/>
+          <path d="M2487.4 50.4 L62.6 1450.4"/>
+          <path d="M2452.4 -10.2 L27.6 1389.8"/>
+          <path d="M2422.4 -62.2 L-2.4 1337.8"/>
+          <path d="M2397.4 -105.5 L-27.4 1294.5"/>
+          <path d="M2374.9 -144.4 L-49.9 1255.6"/>
+          <path d="M2354.9 -179.1 L-69.9 1220.9"/>
+          <path d="M2337.4 -209.4 L-87.4 1190.6"/>
+          <path d="M2322.4 -235.4 L-102.4 1164.6"/>
+          <path d="M2302.4 -270.0 L-122.4 1130.0"/>
+          <path d="M2282.4 -304.6 L-142.4 1095.4"/>
+          <path d="M2267.4 -330.6 L-157.4 1069.4"/>
+          <path d="M2249.9 -360.9 L-174.9 1039.1"/>
+          <path d="M2229.9 -395.6 L-194.9 1004.4"/>
+          <path d="M2207.4 -434.5 L-217.4 965.5"/>
+          <path d="M2182.4 -477.8 L-242.4 922.2"/>
+          <path d="M2152.4 -529.8 L-272.4 870.2"/>
+          <path d="M2117.4 -590.4 L-307.4 809.6"/>
+          <path d="M2077.4 -659.7 L-347.4 740.3"/>
+          <path d="M2032.4 -737.7 L-392.4 662.3"/></g>
+          <g class="dc-cloud-dense" mask="url(#cloudMaskInner)"><path d="M2432.4 -44.8 L7.6 1355.2"/>
+          <path d="M2412.4 -79.5 L-12.4 1320.5"/>
+          <path d="M2394.9 -109.8 L-29.9 1290.2"/>
+          <path d="M2377.4 -140.1 L-47.4 1259.9"/>
+          <path d="M2362.4 -166.1 L-62.4 1233.9"/>
+          <path d="M2349.9 -187.7 L-74.9 1212.3"/>
+          <path d="M2338.4 -207.6 L-86.4 1192.4"/>
+          <path d="M2327.4 -226.7 L-97.4 1173.3"/>
+          <path d="M2317.4 -244.0 L-107.4 1156.0"/>
+          <path d="M2308.4 -259.6 L-116.4 1140.4"/>
+          <path d="M2296.4 -280.4 L-128.4 1119.6"/>
+          <path d="M2287.4 -296.0 L-137.4 1104.0"/>
+          <path d="M2277.4 -313.3 L-147.4 1086.7"/>
+          <path d="M2266.4 -332.4 L-158.4 1067.6"/>
+          <path d="M2254.9 -352.3 L-169.9 1047.7"/>
+          <path d="M2242.4 -373.9 L-182.4 1026.1"/>
+          <path d="M2227.4 -399.9 L-197.4 1000.1"/>
+          <path d="M2209.9 -430.2 L-214.9 969.8"/>
+          <path d="M2192.4 -460.5 L-232.4 939.5"/>
+          <path d="M2172.4 -495.2 L-252.4 904.8"/></g>
+          <g class="dc-cloud-accent" mask="url(#cloudMaskInner)"><path d="M2357.4 -174.7 L-67.4 1225.3"/>
+          <path d="M2302.4 -270.0 L-122.4 1130.0"/>
+          <path d="M2247.4 -365.3 L-177.4 1034.7"/></g>
+        </g>
+
+        <g class="drift-c" mask="url(#cloudMaskOuter)">
+          <g class="dc-cloud-sparse dc-cloud-vertical"><path d="M1510.0 -670.0 L1510.0 1530.0"/>
+          <path d="M1420.0 -670.0 L1420.0 1530.0"/>
+          <path d="M1350.0 -670.0 L1350.0 1530.0"/>
+          <path d="M1290.0 -670.0 L1290.0 1530.0"/>
+          <path d="M1240.0 -670.0 L1240.0 1530.0"/>
+          <path d="M1200.0 -670.0 L1200.0 1530.0"/>
+          <path d="M1165.0 -670.0 L1165.0 1530.0"/>
+          <path d="M1135.0 -670.0 L1135.0 1530.0"/>
+          <path d="M1090.0 -670.0 L1090.0 1530.0"/>
+          <path d="M1045.0 -670.0 L1045.0 1530.0"/>
+          <path d="M1015.0 -670.0 L1015.0 1530.0"/>
+          <path d="M980.0 -670.0 L980.0 1530.0"/>
+          <path d="M940.0 -670.0 L940.0 1530.0"/>
+          <path d="M890.0 -670.0 L890.0 1530.0"/>
+          <path d="M830.0 -670.0 L830.0 1530.0"/>
+          <path d="M760.0 -670.0 L760.0 1530.0"/>
+          <path d="M670.0 -670.0 L670.0 1530.0"/></g>
+          <g class="dc-cloud-dense dc-cloud-vertical" mask="url(#cloudMaskInner)"><path d="M1300.0 -670.0 L1300.0 1530.0"/>
+          <path d="M1265.0 -670.0 L1265.0 1530.0"/>
+          <path d="M1230.0 -670.0 L1230.0 1530.0"/>
+          <path d="M1200.0 -670.0 L1200.0 1530.0"/>
+          <path d="M1175.0 -670.0 L1175.0 1530.0"/>
+          <path d="M1150.0 -670.0 L1150.0 1530.0"/>
+          <path d="M1128.0 -670.0 L1128.0 1530.0"/>
+          <path d="M1108.0 -670.0 L1108.0 1530.0"/>
+          <path d="M1072.0 -670.0 L1072.0 1530.0"/>
+          <path d="M1052.0 -670.0 L1052.0 1530.0"/>
+          <path d="M1030.0 -670.0 L1030.0 1530.0"/>
+          <path d="M1005.0 -670.0 L1005.0 1530.0"/>
+          <path d="M980.0 -670.0 L980.0 1530.0"/>
+          <path d="M950.0 -670.0 L950.0 1530.0"/>
+          <path d="M915.0 -670.0 L915.0 1530.0"/>
+          <path d="M880.0 -670.0 L880.0 1530.0"/></g>
+          <g class="dc-cloud-accent dc-cloud-vertical" mask="url(#cloudMaskInner)"><path d="M1180.0 -670.0 L1180.0 1530.0"/>
+          <path d="M1090.0 -670.0 L1090.0 1530.0"/>
+          <path d="M1000.0 -670.0 L1000.0 1530.0"/></g>
         </g>
       </svg>
     </div>
