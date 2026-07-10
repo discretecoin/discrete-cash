@@ -26,18 +26,54 @@
   overflow: hidden;
 }
 
+.dc-style-1::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(118px, 15vh, 168px);
+  z-index: 70;
+  pointer-events: none;
+  box-shadow: inset 0 118px 74px -72px rgba(13,17,21,.94);
+}
+
 .dc-style-1 > :not(.dc-global-lattice-bg) {
   position: relative;
   z-index: 1;
 }
 
 .dc-style-2 {
-  position: relative;
-  z-index: 5;
+  position: sticky !important;
+  top: 0;
+  z-index: 80 !important;
+  isolation: isolate;
   background: transparent !important;
   backdrop-filter: none !important;
-  border-bottom-color: transparent !important;
+  border-bottom: 0 !important;
   box-shadow: none !important;
+}
+
+#dcNav {
+  position: relative;
+  z-index: 1;
+}
+
+#dcMenu a,
+.dc-style-4 {
+  text-shadow: 0 1px 2px #0D1115, 0 0 18px rgba(13,17,21,.98), 0 0 34px rgba(13,17,21,.82);
+}
+
+#dcMenu a {
+  color: #C8D2D8;
+}
+
+#dcNav .dc-style-10 {
+  box-shadow: 0 0 24px rgba(13,17,21,.74);
+}
+
+.dc-style-5 {
+  filter: drop-shadow(0 1px 2px #0D1115) drop-shadow(0 0 14px rgba(13,17,21,.9));
 }
 
 .dc-global-lattice-bg {
@@ -141,20 +177,17 @@
   position: relative !important;
   isolation: isolate;
   overflow: visible;
-  min-height: clamp(720px, 88vh, 960px);
-  margin-top: -92px;
-  padding-top: 92px;
+  min-height: calc(100svh - 73px);
+  margin-top: 0;
+  padding-top: clamp(56px, 9vh, 112px);
+  padding-bottom: clamp(72px, 10vh, 120px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .dc-hero-field-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(13,17,21,.38) 0%, rgba(13,17,21,.18) 28%, rgba(13,17,21,.03) 52%, rgba(13,17,21,0) 100%),
-    linear-gradient(180deg, rgba(13,17,21,.08) 0%, rgba(13,17,21,0) 34%, rgba(13,17,21,0) 100%);
+  display: none;
 }
 
 .dc-hero-field-section > .dc-style-12,
@@ -202,9 +235,18 @@
   }
 
   .dc-hero-field-section {
-    min-height: auto;
-    margin-top: -76px;
-    padding-top: 76px;
+    min-height: calc(100svh - 91px);
+    margin-top: 0;
+    padding-top: clamp(44px, 7vh, 76px);
+    padding-bottom: 72px;
+  }
+
+  .dc-hero-field-section > .dc-style-12 {
+    transform: translateY(clamp(18px, 4vh, 34px));
+  }
+
+  .dc-hero-field-section > #dcChips {
+    margin-top: clamp(34px, 4vh, 44px);
   }
 
   .dc-hero-art-slot {
