@@ -116,9 +116,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 3.2% 43% at 60.6% 43%, rgba(26,232,217,.18), rgba(95,226,159,.08) 34%, rgba(95,226,159,0) 72%),
-    radial-gradient(ellipse 4.2% 48% at 65.6% 44%, rgba(95,226,159,.23), rgba(20,217,207,.09) 36%, rgba(95,226,159,0) 74%),
-    radial-gradient(ellipse 3.2% 41% at 70.6% 42%, rgba(180,255,229,.16), rgba(95,226,159,.06) 35%, rgba(95,226,159,0) 72%),
+    radial-gradient(ellipse 3.2% 43% at 56.1% 43%, rgba(26,232,217,.18), rgba(95,226,159,.08) 34%, rgba(95,226,159,0) 72%),
+    radial-gradient(ellipse 4.2% 48% at 61.1% 44%, rgba(95,226,159,.23), rgba(20,217,207,.09) 36%, rgba(95,226,159,0) 74%),
+    radial-gradient(ellipse 3.2% 41% at 66.1% 42%, rgba(180,255,229,.16), rgba(95,226,159,.06) 35%, rgba(95,226,159,0) 72%),
     linear-gradient(90deg, rgba(13,17,21,.90) 0%, rgba(13,17,21,.56) 18%, rgba(13,17,21,.24) 36%, rgba(13,17,21,.08) 58%, rgba(13,17,21,.02) 100%),
     linear-gradient(180deg, rgba(13,17,21,.26) 0%, rgba(13,17,21,.04) 18%, rgba(13,17,21,0) 48%, rgba(13,17,21,.16) 76%, rgba(13,17,21,.62) 100%);
 }
@@ -284,9 +284,9 @@
 
   .dc-global-lattice-bg::after {
     background:
-      radial-gradient(ellipse 5.5% 39% at 60.6% 43%, rgba(26,232,217,.15), rgba(95,226,159,.06) 34%, rgba(95,226,159,0) 72%),
-      radial-gradient(ellipse 6.5% 45% at 65.6% 45%, rgba(95,226,159,.17), rgba(20,217,207,.07) 36%, rgba(95,226,159,0) 74%),
-      radial-gradient(ellipse 5.5% 37% at 70.6% 42%, rgba(180,255,229,.12), rgba(95,226,159,.05) 35%, rgba(95,226,159,0) 72%),
+      radial-gradient(ellipse 5.5% 39% at 56.1% 43%, rgba(26,232,217,.15), rgba(95,226,159,.06) 34%, rgba(95,226,159,0) 72%),
+      radial-gradient(ellipse 6.5% 45% at 61.1% 45%, rgba(95,226,159,.17), rgba(20,217,207,.07) 36%, rgba(95,226,159,0) 74%),
+      radial-gradient(ellipse 5.5% 37% at 66.1% 42%, rgba(180,255,229,.12), rgba(95,226,159,.05) 35%, rgba(95,226,159,0) 72%),
       linear-gradient(90deg, rgba(13,17,21,.88) 0%, rgba(13,17,21,.48) 30%, rgba(13,17,21,.13) 64%, rgba(13,17,21,.02) 100%),
       linear-gradient(180deg, rgba(13,17,21,.18) 0%, rgba(13,17,21,0) 44%, rgba(13,17,21,.72) 100%);
   }
@@ -388,8 +388,8 @@
             <stop offset="88%" stop-color="#5FE29F" stop-opacity=".1"/>
             <stop offset="100%" stop-color="#5FE29F" stop-opacity="0"/>
           </linearGradient>
-          <mask id="dcPillarMask" maskUnits="userSpaceOnUse" x="1000" y="220" width="340" height="1180">
-            <rect x="1000" y="220" width="340" height="1180" fill="url(#dcPillarFade)"/>
+          <mask id="dcPillarMask" maskUnits="userSpaceOnUse" x="920" y="220" width="340" height="1180">
+            <rect x="920" y="220" width="340" height="1180" fill="url(#dcPillarFade)"/>
           </mask>
           <radialGradient id="cloudFade" cx="46%" cy="52%" r="56%">
             <stop offset="0%" stop-color="white" stop-opacity="1"/>
@@ -415,12 +415,12 @@
 
           <!-- The glow and the core line share exact x coordinates, so every pillar reads as one beam. -->
           <g class="dc-light-pillars" mask="url(#dcPillarMask)">
-            <rect class="dc-light-pillar pillar-a" x="1067" y="220" width="46" height="1180" rx="23"/>
-            <rect class="dc-light-pillar pillar-b" x="1152" y="220" width="56" height="1180" rx="28"/>
-            <rect class="dc-light-pillar pillar-c" x="1248" y="220" width="44" height="1180" rx="22"/>
-            <path class="dc-light-core pillar-a" d="M1090 220 V1400"/>
-            <path class="dc-light-core pillar-b" d="M1180 220 V1400"/>
-            <path class="dc-light-core pillar-c" d="M1270 220 V1400"/>
+            <rect class="dc-light-pillar pillar-a" x="987" y="220" width="46" height="1180" rx="23"/>
+            <rect class="dc-light-pillar pillar-b" x="1072" y="220" width="56" height="1180" rx="28"/>
+            <rect class="dc-light-pillar pillar-c" x="1168" y="220" width="44" height="1180" rx="22"/>
+            <path class="dc-light-core pillar-a" d="M1010 220 V1400"/>
+            <path class="dc-light-core pillar-b" d="M1100 220 V1400"/>
+            <path class="dc-light-core pillar-c" d="M1190 220 V1400"/>
           </g>
 
           <g class="dc-cloud-static dc-cloud-sparse">
@@ -599,9 +599,9 @@
             <path class="accent" d="M1480 538 L510 1098"/>
           </g>
           <g class="dc-cloud-live live-c">
-            <path class="accent" d="M1270 250 V1380"/>
-            <path class="accent" d="M1180 210 V1420"/>
-            <path class="accent" d="M1090 280 V1340"/>
+            <path class="accent" d="M1190 250 V1380"/>
+            <path class="accent" d="M1100 210 V1420"/>
+            <path class="accent" d="M1010 280 V1340"/>
           </g>
         </g>
       </svg>
@@ -646,7 +646,7 @@
 
     <!-- chips -->
     <div id="dcChips" data-reveal class="dc-style-24">
-      <span class="dc-style-25">Post-Quantum Only</span>
+      <span class="dc-style-25">Post-Quantum only</span>
       <span class="dc-style-25">CryptoNote lineage</span>
       <span class="dc-style-25">Stealth addresses</span>
       <span class="dc-style-25">Solo CPU mining</span>
