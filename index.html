@@ -116,6 +116,7 @@
   position: absolute;
   inset: 0;
   background:
+    radial-gradient(ellipse 68% 58% at 0% 100%, rgba(13,17,21,.99) 0%, rgba(13,17,21,.95) 32%, rgba(13,17,21,.65) 52%, rgba(13,17,21,.18) 68%, rgba(13,17,21,0) 82%),
     radial-gradient(ellipse 3.2% 43% at 56.1% 43%, rgba(26,232,217,.18), rgba(95,226,159,.08) 34%, rgba(95,226,159,0) 72%),
     radial-gradient(ellipse 4.2% 48% at 61.1% 44%, rgba(95,226,159,.23), rgba(20,217,207,.09) 36%, rgba(95,226,159,0) 74%),
     radial-gradient(ellipse 3.2% 41% at 66.1% 42%, rgba(180,255,229,.16), rgba(95,226,159,.06) 35%, rgba(95,226,159,0) 72%),
@@ -206,29 +207,31 @@
 
 .dc-global-lattice-bg .live-a,
 .dc-global-lattice-bg .live-b,
-.dc-global-lattice-bg .live-c {
+.dc-global-lattice-bg .live-c path {
   will-change: transform;
 }
 
-.dc-global-lattice-bg .live-a { animation: dc-live-a 26s ease-in-out infinite alternate; }
-.dc-global-lattice-bg .live-b { animation: dc-live-b 30s ease-in-out infinite alternate; }
-.dc-global-lattice-bg .live-c { animation: dc-live-c 20s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-a { animation: dc-live-a 17s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-b { animation: dc-live-b 21s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-c path:nth-child(1) { animation: dc-live-c 18s ease-in-out -3s infinite alternate; }
+.dc-global-lattice-bg .live-c path:nth-child(2) { animation: dc-live-c 23s ease-in-out -9s infinite alternate; }
+.dc-global-lattice-bg .live-c path:nth-child(3) { animation: dc-live-c 29s ease-in-out -14s infinite alternate; }
 
 #heroStripes.is-motion-paused .live-a,
 #heroStripes.is-motion-paused .live-b,
-#heroStripes.is-motion-paused .live-c,
+#heroStripes.is-motion-paused .live-c path,
 #heroStripes.is-motion-paused {
   animation-play-state: paused !important;
 }
 
 @keyframes dc-live-a {
-  0% { transform: translate3d(-7px, 4px, 0); }
-  100% { transform: translate3d(8px, -5px, 0); }
+  0% { transform: translate3d(-10px, 6px, 0); }
+  100% { transform: translate3d(12px, -7px, 0); }
 }
 
 @keyframes dc-live-b {
-  0% { transform: translate3d(6px, 5px, 0); }
-  100% { transform: translate3d(-7px, -5px, 0); }
+  0% { transform: translate3d(9px, 6px, 0); }
+  100% { transform: translate3d(-11px, -7px, 0); }
 }
 
 @keyframes dc-live-c {
@@ -284,6 +287,7 @@
 
   .dc-global-lattice-bg::after {
     background:
+      radial-gradient(ellipse 78% 56% at 0% 100%, rgba(13,17,21,.99) 0%, rgba(13,17,21,.95) 34%, rgba(13,17,21,.68) 54%, rgba(13,17,21,.2) 70%, rgba(13,17,21,0) 84%),
       radial-gradient(ellipse 5.5% 39% at 56.1% 43%, rgba(26,232,217,.15), rgba(95,226,159,.06) 34%, rgba(95,226,159,0) 72%),
       radial-gradient(ellipse 6.5% 45% at 61.1% 45%, rgba(95,226,159,.17), rgba(20,217,207,.07) 36%, rgba(95,226,159,0) 74%),
       radial-gradient(ellipse 5.5% 37% at 66.1% 42%, rgba(180,255,229,.12), rgba(95,226,159,.05) 35%, rgba(95,226,159,0) 72%),
@@ -326,7 +330,7 @@
 @media (prefers-reduced-motion: reduce) {
   .dc-global-lattice-bg .live-a,
   .dc-global-lattice-bg .live-b,
-  .dc-global-lattice-bg .live-c {
+  .dc-global-lattice-bg .live-c path {
     animation: none !important;
   }
 }
