@@ -84,7 +84,7 @@
   --dc-lattice-y-nudge: clamp(24px, 6vh, 58px);
   top: calc(var(--dc-hero-nav-offset) + ((100svh - var(--dc-hero-nav-offset) - var(--dc-lattice-visual-height)) / 2) + var(--dc-lattice-y-nudge));
   right: 0;
-  width: min(1460px, 92vw);
+  width: min(1600px, 96vw);
   height: var(--dc-lattice-height);
   z-index: 0;
   pointer-events: none;
@@ -116,9 +116,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 3.5% 42% at 54% 42%, rgba(26,232,217,.22), rgba(95,226,159,.10) 34%, rgba(95,226,159,0) 72%),
-    radial-gradient(ellipse 4.5% 47% at 63% 44%, rgba(95,226,159,.24), rgba(20,217,207,.09) 36%, rgba(95,226,159,0) 74%),
-    radial-gradient(ellipse 3.5% 39% at 72% 41%, rgba(180,255,229,.18), rgba(95,226,159,.07) 35%, rgba(95,226,159,0) 72%),
+    radial-gradient(ellipse 3.2% 43% at 60.6% 43%, rgba(26,232,217,.18), rgba(95,226,159,.08) 34%, rgba(95,226,159,0) 72%),
+    radial-gradient(ellipse 4.2% 48% at 65.6% 44%, rgba(95,226,159,.23), rgba(20,217,207,.09) 36%, rgba(95,226,159,0) 74%),
+    radial-gradient(ellipse 3.2% 41% at 70.6% 42%, rgba(180,255,229,.16), rgba(95,226,159,.06) 35%, rgba(95,226,159,0) 72%),
     linear-gradient(90deg, rgba(13,17,21,.90) 0%, rgba(13,17,21,.56) 18%, rgba(13,17,21,.24) 36%, rgba(13,17,21,.08) 58%, rgba(13,17,21,.02) 100%),
     linear-gradient(180deg, rgba(13,17,21,.26) 0%, rgba(13,17,21,.04) 18%, rgba(13,17,21,0) 48%, rgba(13,17,21,.16) 76%, rgba(13,17,21,.62) 100%);
 }
@@ -148,6 +148,58 @@
   opacity: .54;
 }
 
+.dc-global-lattice-bg .dc-cloud-live.live-a path { stroke: url(#dcLiveRise); }
+.dc-global-lattice-bg .dc-cloud-live.live-b path { stroke: url(#dcLiveFall); }
+.dc-global-lattice-bg .dc-cloud-live.live-c path { stroke: url(#dcLiveVertical); }
+
+/* Turn a large share of the underlying lattice into point streams while
+   preserving continuous structural lines between them. */
+.dc-global-lattice-bg .dc-cloud-sparse path:nth-child(3n + 1) {
+  stroke-dasharray: .25 18;
+  stroke-width: 1.45;
+  opacity: .44;
+}
+
+.dc-global-lattice-bg .dc-cloud-dense path:nth-child(odd) {
+  stroke-dasharray: .25 14;
+  stroke-width: 1.5;
+  opacity: .56;
+}
+
+.dc-global-lattice-bg .dc-signal-paths path {
+  fill: none;
+  stroke: #8CF7D0;
+  stroke-width: 1.8;
+  stroke-dasharray: .2 24;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  opacity: .78;
+}
+
+.dc-global-lattice-bg .dc-signal-paths path:nth-child(even) {
+  stroke-dasharray: .2 21;
+  opacity: .52;
+}
+
+.dc-global-lattice-bg .dc-signal-paths path:nth-child(3n) {
+  stroke-dasharray: .2 29;
+  opacity: .4;
+}
+
+.dc-global-lattice-bg .dc-light-pillar {
+  fill: url(#dcPillarFill);
+}
+
+.dc-global-lattice-bg .dc-light-core {
+  stroke: url(#dcPillarCore);
+  stroke-width: 1.35;
+  vector-effect: non-scaling-stroke;
+}
+
+.dc-global-lattice-bg .pillar-a { opacity: .58; }
+.dc-global-lattice-bg .pillar-b { opacity: .78; }
+.dc-global-lattice-bg .pillar-c { opacity: .48; }
+
 .dc-global-lattice-bg .dc-facet {
   fill: url(#dcFacet);
 }
@@ -158,9 +210,9 @@
   will-change: transform;
 }
 
-.dc-global-lattice-bg .live-a { animation: dc-live-a 14s ease-in-out infinite alternate; }
-.dc-global-lattice-bg .live-b { animation: dc-live-b 18s ease-in-out infinite alternate; }
-.dc-global-lattice-bg .live-c { animation: dc-live-c 16s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-a { animation: dc-live-a 26s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-b { animation: dc-live-b 30s ease-in-out infinite alternate; }
+.dc-global-lattice-bg .live-c { animation: dc-live-c 20s ease-in-out infinite alternate; }
 
 #heroStripes.is-motion-paused .live-a,
 #heroStripes.is-motion-paused .live-b,
@@ -170,18 +222,18 @@
 }
 
 @keyframes dc-live-a {
-  0% { transform: translate3d(-28px, 18px, 0); }
-  100% { transform: translate3d(30px, -20px, 0); }
+  0% { transform: translate3d(-7px, 4px, 0); }
+  100% { transform: translate3d(8px, -5px, 0); }
 }
 
 @keyframes dc-live-b {
-  0% { transform: translate3d(26px, 22px, 0); }
-  100% { transform: translate3d(-28px, -24px, 0); }
+  0% { transform: translate3d(6px, 5px, 0); }
+  100% { transform: translate3d(-7px, -5px, 0); }
 }
 
 @keyframes dc-live-c {
-  0% { transform: translate3d(0, -28px, 0); }
-  100% { transform: translate3d(0, 32px, 0); }
+  0% { transform: translate3d(-18px, 0, 0); }
+  100% { transform: translate3d(20px, 0, 0); }
 }
 
 .dc-hero-field-section {
@@ -223,7 +275,7 @@
     --dc-hero-nav-offset: 91px;
     --dc-lattice-y-nudge: 28px;
     right: -18vw;
-    width: min(690px, 118vw);
+    width: min(740px, 126vw);
   }
 
   .dc-global-lattice-bg::before {
@@ -232,9 +284,9 @@
 
   .dc-global-lattice-bg::after {
     background:
-      radial-gradient(ellipse 6% 38% at 53% 43%, rgba(26,232,217,.18), rgba(95,226,159,.07) 34%, rgba(95,226,159,0) 72%),
-      radial-gradient(ellipse 7% 44% at 63% 45%, rgba(95,226,159,.18), rgba(20,217,207,.07) 36%, rgba(95,226,159,0) 74%),
-      radial-gradient(ellipse 6% 36% at 73% 42%, rgba(180,255,229,.13), rgba(95,226,159,.05) 35%, rgba(95,226,159,0) 72%),
+      radial-gradient(ellipse 5.5% 39% at 60.6% 43%, rgba(26,232,217,.15), rgba(95,226,159,.06) 34%, rgba(95,226,159,0) 72%),
+      radial-gradient(ellipse 6.5% 45% at 65.6% 45%, rgba(95,226,159,.17), rgba(20,217,207,.07) 36%, rgba(95,226,159,0) 74%),
+      radial-gradient(ellipse 5.5% 37% at 70.6% 42%, rgba(180,255,229,.12), rgba(95,226,159,.05) 35%, rgba(95,226,159,0) 72%),
       linear-gradient(90deg, rgba(13,17,21,.88) 0%, rgba(13,17,21,.48) 30%, rgba(13,17,21,.13) 64%, rgba(13,17,21,.02) 100%),
       linear-gradient(180deg, rgba(13,17,21,.18) 0%, rgba(13,17,21,0) 44%, rgba(13,17,21,.72) 100%);
   }
@@ -291,7 +343,55 @@
             <stop offset="0" stop-color="#5FE29F" stop-opacity=".10"/>
             <stop offset="1" stop-color="#5FE29F" stop-opacity=".012"/>
           </linearGradient>
-          <radialGradient id="cloudFade" cx="50%" cy="52%" r="54%">
+          <linearGradient id="dcPillarFill" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5FE29F" stop-opacity="0"/>
+            <stop offset="28%" stop-color="#4FE8C4" stop-opacity=".08"/>
+            <stop offset="50%" stop-color="#A9FFE1" stop-opacity=".42"/>
+            <stop offset="72%" stop-color="#4FE8C4" stop-opacity=".08"/>
+            <stop offset="100%" stop-color="#5FE29F" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="dcPillarCore" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1800">
+            <stop offset="0%" stop-color="#A9FFE1" stop-opacity="0"/>
+            <stop offset="24%" stop-color="#A9FFE1" stop-opacity=".24"/>
+            <stop offset="50%" stop-color="#C7FFEA" stop-opacity=".96"/>
+            <stop offset="76%" stop-color="#5FE29F" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#5FE29F" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="dcPillarFade" gradientUnits="userSpaceOnUse" x1="0" y1="220" x2="0" y2="1400">
+            <stop offset="0%" stop-color="white" stop-opacity="0"/>
+            <stop offset="18%" stop-color="white" stop-opacity=".72"/>
+            <stop offset="42%" stop-color="white" stop-opacity="1"/>
+            <stop offset="72%" stop-color="white" stop-opacity=".82"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="dcLiveRise" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8CF7D0" stop-opacity="0"/>
+            <stop offset="16%" stop-color="#8CF7D0" stop-opacity=".12"/>
+            <stop offset="32%" stop-color="#8CF7D0" stop-opacity=".9"/>
+            <stop offset="70%" stop-color="#5FE29F" stop-opacity=".78"/>
+            <stop offset="86%" stop-color="#5FE29F" stop-opacity=".1"/>
+            <stop offset="100%" stop-color="#5FE29F" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="dcLiveFall" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#8CF7D0" stop-opacity="0"/>
+            <stop offset="16%" stop-color="#8CF7D0" stop-opacity=".12"/>
+            <stop offset="32%" stop-color="#8CF7D0" stop-opacity=".9"/>
+            <stop offset="70%" stop-color="#5FE29F" stop-opacity=".78"/>
+            <stop offset="86%" stop-color="#5FE29F" stop-opacity=".1"/>
+            <stop offset="100%" stop-color="#5FE29F" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="dcLiveVertical" gradientUnits="userSpaceOnUse" x1="0" y1="210" x2="0" y2="1420">
+            <stop offset="0%" stop-color="#8CF7D0" stop-opacity="0"/>
+            <stop offset="18%" stop-color="#8CF7D0" stop-opacity=".14"/>
+            <stop offset="36%" stop-color="#B5FFE4" stop-opacity=".92"/>
+            <stop offset="70%" stop-color="#5FE29F" stop-opacity=".78"/>
+            <stop offset="88%" stop-color="#5FE29F" stop-opacity=".1"/>
+            <stop offset="100%" stop-color="#5FE29F" stop-opacity="0"/>
+          </linearGradient>
+          <mask id="dcPillarMask" maskUnits="userSpaceOnUse" x="1000" y="220" width="340" height="1180">
+            <rect x="1000" y="220" width="340" height="1180" fill="url(#dcPillarFade)"/>
+          </mask>
+          <radialGradient id="cloudFade" cx="46%" cy="52%" r="56%">
             <stop offset="0%" stop-color="white" stop-opacity="1"/>
             <stop offset="32%" stop-color="white" stop-opacity=".98"/>
             <stop offset="62%" stop-color="white" stop-opacity=".76"/>
@@ -311,6 +411,16 @@
             <polygon class="dc-facet" points="1180,312 1440,185 1700,340 1440,488" opacity=".18"/>
             <polygon class="dc-facet" points="920,462 1180,312 1440,488 1180,632" opacity=".13"/>
             <polygon class="dc-facet" points="720,625 980,492 1240,630 980,772" opacity=".08"/>
+          </g>
+
+          <!-- The glow and the core line share exact x coordinates, so every pillar reads as one beam. -->
+          <g class="dc-light-pillars" mask="url(#dcPillarMask)">
+            <rect class="dc-light-pillar pillar-a" x="1067" y="220" width="46" height="1180" rx="23"/>
+            <rect class="dc-light-pillar pillar-b" x="1152" y="220" width="56" height="1180" rx="28"/>
+            <rect class="dc-light-pillar pillar-c" x="1248" y="220" width="44" height="1180" rx="22"/>
+            <path class="dc-light-core pillar-a" d="M1090 220 V1400"/>
+            <path class="dc-light-core pillar-b" d="M1180 220 V1400"/>
+            <path class="dc-light-core pillar-c" d="M1270 220 V1400"/>
           </g>
 
           <g class="dc-cloud-static dc-cloud-sparse">
@@ -456,20 +566,42 @@
             <path d="M960.0 -900.0 L960.0 1900.0"/>
           </g>
 
+          <!-- Brighter packet trails sit above the solid lattice, echoing the mockup's point-cloud texture. -->
+          <g class="dc-signal-paths">
+            <path d="M260 190 L1580 952"/>
+            <path d="M390 330 L1510 977"/>
+            <path d="M180 410 L1500 1172"/>
+            <path d="M470 120 L1670 813"/>
+            <path d="M510 1518 L1545 920"/>
+            <path d="M650 1490 L1610 936"/>
+            <path d="M420 1600 L1510 971"/>
+            <path d="M760 1510 L1670 985"/>
+            <path d="M780 -40 V1740"/>
+            <path d="M850 -40 V1740"/>
+            <path d="M930 -40 V1740"/>
+            <path d="M1018 -40 V1740"/>
+            <path d="M1090 -40 V1740"/>
+            <path d="M1180 -40 V1740"/>
+            <path d="M1270 -40 V1740"/>
+            <path d="M1370 -40 V1740"/>
+            <path d="M1460 -40 V1740"/>
+            <path d="M1540 -40 V1740"/>
+          </g>
+
           <g class="dc-cloud-live live-a">
-            <path class="accent" d="M-193.9 -420.3 L2663.9 1229.7"/>
-            <path class="accent" d="M-248.9 -325.0 L2608.9 1325.0"/>
-            <path class="accent" d="M-303.9 -229.7 L2553.9 1420.3"/>
+            <path class="accent" d="M420 332 L1570 996"/>
+            <path class="accent" d="M360 432 L1510 1096"/>
+            <path class="accent" d="M480 530 L1450 1090"/>
           </g>
           <g class="dc-cloud-live live-b">
-            <path class="accent" d="M2668.9 -221.1 L-188.9 1428.9"/>
-            <path class="accent" d="M2608.9 -325.0 L-248.9 1325.0"/>
-            <path class="accent" d="M2548.9 -428.9 L-308.9 1221.1"/>
+            <path class="accent" d="M1600 338 L450 1002"/>
+            <path class="accent" d="M1540 438 L390 1102"/>
+            <path class="accent" d="M1480 538 L510 1098"/>
           </g>
           <g class="dc-cloud-live live-c">
-            <path class="accent" d="M1270.0 -900.0 L1270.0 1900.0"/>
-            <path class="accent" d="M1180.0 -900.0 L1180.0 1900.0"/>
-            <path class="accent" d="M1090.0 -900.0 L1090.0 1900.0"/>
+            <path class="accent" d="M1270 250 V1380"/>
+            <path class="accent" d="M1180 210 V1420"/>
+            <path class="accent" d="M1090 280 V1340"/>
           </g>
         </g>
       </svg>
@@ -514,10 +646,10 @@
 
     <!-- chips -->
     <div id="dcChips" data-reveal class="dc-style-24">
+      <span class="dc-style-25">Post-Quantum Only</span>
       <span class="dc-style-25">CryptoNote lineage</span>
-      <span class="dc-style-25">Pure Post-Quantum</span>
       <span class="dc-style-25">Stealth addresses</span>
-      <span class="dc-style-25">ASIC-resistant PoW</span>
+      <span class="dc-style-25">Solo CPU mining</span>
     </div>
   </section>
 
@@ -566,7 +698,7 @@
       <div class="dc-style-49 dc-hover-5">
         <div class="dc-style-50">03</div>
         <h3 class="dc-style-51">One CPU, one vote</h3>
-        <p class="dc-style-52">Proof-of-work tuned for commodity CPUs and built to resist ASICs, pools, and botnet farms — a non-outsourceable design that keeps issuance with solo miners rather than a few industrial operators.</p>
+        <p class="dc-style-52">Proof-of-work tuned for commodity CPUs and built to resist ASICs, pools, and rental — a non-outsourceable design that keeps issuance with solo miners rather than a few industrial operators.</p>
       </div>
     </div>
   </section>
@@ -692,7 +824,7 @@
         </div>
         <div class="dc-style-86">
           <span class="dc-style-76">Mining</span>
-          <span class="dc-style-87">CPU-only · non-outsourceable · ASIC & pool resistant</span>
+          <span class="dc-style-87">Egalitarian · CPU-only · non-outsourceable</span>
         </div>
         <div class="dc-style-86">
           <span class="dc-style-76">Receiving</span>
