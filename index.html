@@ -187,6 +187,24 @@
   opacity: .4;
 }
 
+/* Selected packet trails continuously march along their paths. */
+.dc-global-lattice-bg .dc-signal-paths path.dc-dot-flow {
+  stroke-dasharray: .2 23.8;
+  opacity: .78;
+  animation-duration: var(--dc-flow-speed, 11s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: stroke-dashoffset;
+}
+
+.dc-global-lattice-bg .dc-dot-flow.flow-forward { animation-name: dc-dot-flow-forward; }
+.dc-global-lattice-bg .dc-dot-flow.flow-reverse { animation-name: dc-dot-flow-reverse; }
+.dc-global-lattice-bg .dc-dot-flow.flow-fast { --dc-flow-speed: 8s; }
+.dc-global-lattice-bg .dc-dot-flow.flow-medium { --dc-flow-speed: 11s; }
+.dc-global-lattice-bg .dc-dot-flow.flow-slow { --dc-flow-speed: 15s; }
+.dc-global-lattice-bg .dc-dot-flow:nth-child(3n) { animation-delay: -4s; }
+.dc-global-lattice-bg .dc-dot-flow:nth-child(3n + 1) { animation-delay: -7s; }
+
 .dc-global-lattice-bg .dc-light-pillar {
   fill: url(#dcPillarFill);
 }
@@ -220,6 +238,7 @@
 #heroStripes.is-motion-paused .live-a,
 #heroStripes.is-motion-paused .live-b,
 #heroStripes.is-motion-paused .live-c path,
+#heroStripes.is-motion-paused .dc-dot-flow,
 #heroStripes.is-motion-paused {
   animation-play-state: paused !important;
 }
@@ -237,6 +256,16 @@
 @keyframes dc-live-c {
   0% { transform: translate3d(-18px, 0, 0); }
   100% { transform: translate3d(20px, 0, 0); }
+}
+
+@keyframes dc-dot-flow-forward {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -240; }
+}
+
+@keyframes dc-dot-flow-reverse {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 240; }
 }
 
 .dc-hero-field-section {
@@ -336,7 +365,8 @@
 @media (prefers-reduced-motion: reduce) {
   .dc-global-lattice-bg .live-a,
   .dc-global-lattice-bg .live-b,
-  .dc-global-lattice-bg .live-c path {
+  .dc-global-lattice-bg .live-c path,
+  .dc-global-lattice-bg .dc-dot-flow {
     animation: none !important;
   }
 }
@@ -578,24 +608,24 @@
 
           <!-- Brighter packet trails sit above the solid lattice, echoing the mockup's point-cloud texture. -->
           <g class="dc-signal-paths">
-            <path d="M260 190 L1580 952"/>
-            <path d="M390 330 L1510 977"/>
+            <path class="dc-dot-flow flow-forward flow-medium" d="M260 190 L1580 952"/>
+            <path class="dc-dot-flow flow-forward flow-slow" d="M390 330 L1510 977"/>
             <path d="M180 410 L1500 1172"/>
-            <path d="M470 120 L1670 813"/>
-            <path d="M510 1518 L1545 920"/>
+            <path class="dc-dot-flow flow-forward flow-fast" d="M470 120 L1670 813"/>
+            <path class="dc-dot-flow flow-reverse flow-medium" d="M510 1518 L1545 920"/>
             <path d="M650 1490 L1610 936"/>
-            <path d="M420 1600 L1510 971"/>
-            <path d="M760 1510 L1670 985"/>
-            <path d="M780 -40 V1740"/>
-            <path d="M850 -40 V1740"/>
+            <path class="dc-dot-flow flow-reverse flow-slow" d="M420 1600 L1510 971"/>
+            <path class="dc-dot-flow flow-reverse flow-fast" d="M760 1510 L1670 985"/>
+            <path class="dc-dot-flow flow-forward flow-slow" d="M780 -40 V1740"/>
+            <path class="dc-dot-flow flow-reverse flow-medium" d="M850 -40 V1740"/>
             <path d="M930 -40 V1740"/>
-            <path d="M1018 -40 V1740"/>
+            <path class="dc-dot-flow flow-reverse flow-medium" d="M1018 -40 V1740"/>
             <path d="M1090 -40 V1740"/>
-            <path d="M1180 -40 V1740"/>
+            <path class="dc-dot-flow flow-forward flow-fast" d="M1180 -40 V1740"/>
             <path d="M1270 -40 V1740"/>
-            <path d="M1370 -40 V1740"/>
+            <path class="dc-dot-flow flow-reverse flow-slow" d="M1370 -40 V1740"/>
             <path d="M1460 -40 V1740"/>
-            <path d="M1540 -40 V1740"/>
+            <path class="dc-dot-flow flow-forward flow-medium" d="M1540 -40 V1740"/>
           </g>
 
           <g class="dc-cloud-live live-a">
