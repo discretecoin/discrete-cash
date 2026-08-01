@@ -17,6 +17,15 @@
         root.qrcodegen || null
       );
     });
+    // Browsers can reuse the same document when only the fragment changes.
+    // Reload so a second payment link can never leave stale recipient or
+    // amount data from the previous request on screen.
+    if (typeof root.addEventListener === "function" && root.location &&
+        typeof root.location.reload === "function") {
+      root.addEventListener("hashchange", function onPaymentLinkChanged() {
+        root.location.reload();
+      });
+    }
   }
 }(typeof globalThis !== "undefined" ? globalThis : this, function createDiscretePay() {
   "use strict";

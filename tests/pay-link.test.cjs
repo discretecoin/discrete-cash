@@ -211,10 +211,13 @@ test("QR renderer encodes the exact HTTPS share link", function () {
 
 test("page loads the local pinned QR generator and keeps QR initially hidden", function () {
   const html = fs.readFileSync(path.join(__dirname, "..", "pay", "index.html"), "utf8");
+  const pageScript = fs.readFileSync(path.join(__dirname, "..", "pay", "pay.js"), "utf8");
   assert.match(html, /<script src="\.\/vendor\/qrcodegen\.js" defer><\/script>\s*<script src="\.\/pay\.js" defer><\/script>/);
   assert.match(html, /id="copy-link"[^>]*>Copy payment link<\/button>/);
   assert.match(html, /id="qr-panel"[^>]*hidden/);
   assert.doesNotMatch(html, /https?:\/\/[^"']+qrcode[^"']*\.js/i);
+  assert.match(pageScript, /addEventListener\("hashchange"/);
+  assert.match(pageScript, /root\.location\.reload\(\)/);
 });
 
 test("vendored QR generator matches the recorded v1.8.0 build", function () {
