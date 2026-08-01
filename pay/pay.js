@@ -209,14 +209,20 @@
       throw invalid("The payment link is missing or too long.");
     }
 
-    const match = /^#v=1&request=([^&]+)$/.exec(hash);
-    if (!match) {
+    if (hash.startsWith("#discrete:")) {
+      return parsePaymentUri(hash.slice(1));
+    }
+
+    // Backward compatibility for links generated before the readable fragment
+    // was introduced. New links are never emitted in this format.
+    const legacyMatch = /^#v=1&request=([^&]+)$/.exec(hash);
+    if (!legacyMatch) {
       throw invalid("The payment link format is not supported.");
     }
 
     let uri;
     try {
-      uri = decodeURIComponent(match[1]);
+      uri = decodeURIComponent(legacyMatch[1]);
     } catch (error) {
       throw invalid("The payment link contains invalid percent encoding.");
     }
@@ -231,14 +237,14 @@
     } catch (error) {
       throw invalid("The payment link base URL is invalid.");
     }
-    const canonicalBase = parsedBase.origin + parsedBase.pathname + parsedBase.hash;
+    const canonicalBase = parsedBase.origin + parsedBase.pathname + "#";
     if (parsedBase.protocol !== "https:" || parsedBase.username !== "" ||
         parsedBase.password !== "" || parsedBase.search !== "" ||
         !parsedBase.pathname.endsWith("/pay/") ||
-        parsedBase.hash !== "#v=1&request=" || baseUrl !== canonicalBase) {
+        parsedBase.hash !== "" || baseUrl !== canonicalBase) {
       throw invalid("The payment link base URL is invalid.");
     }
-    return baseUrl + encodeURIComponent(parsed.uri);
+    return baseUrl + parsed.uri;
   }
 
   function makeCurrentShareLink(locationLike, uri) {
@@ -249,7 +255,7 @@
     }
 
     return makeShareLink(
-      locationLike.origin + locationLike.pathname + "#v=1&request=",
+      locationLike.origin + locationLike.pathname + "#",
       uri
     );
   }

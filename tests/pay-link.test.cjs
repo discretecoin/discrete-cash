@@ -8,7 +8,9 @@ const test = require("node:test");
 const vm = require("node:vm");
 const pay = require("../pay/pay.js");
 
-const BASE = "https://discrete.cash/pay/#v=1&request=";
+const PAGE_BASE = "https://discrete.cash/pay/";
+const BASE = PAGE_BASE + "#";
+const LEGACY_BASE = PAGE_BASE + "#v=1&request=";
 const PAGE_LOCATION = {
   protocol: "https:",
   origin: "https://discrete.cash",
@@ -16,7 +18,7 @@ const PAGE_LOCATION = {
 };
 
 function hashFor(uri) {
-  return "#v=1&request=" + encodeURIComponent(uri);
+  return "#" + uri;
 }
 
 test("accepts canonical base and deposit account numbers", function () {
@@ -43,20 +45,33 @@ test("parses a wallet-generated request", function () {
     amount: "1.00",
     label: "donate"
   });
-  assert.equal(pay.makeShareLink(BASE, uri), BASE + encodeURIComponent(uri));
+  assert.equal(pay.makeShareLink(BASE, uri), BASE + uri);
   assert.equal(
     pay.makeCurrentShareLink(PAGE_LOCATION, uri),
-    BASE + encodeURIComponent(uri)
+    BASE + uri
   );
 });
 
-test("decodes the outer fragment once and the query value once", function () {
+test("readable links preserve the native URI encoding", function () {
   const uri = "discrete:100-1-GS7P-6?amount=2.50&label=C%2B%2B";
   const shareLink = pay.makeShareLink(BASE, uri);
+  assert.match(shareLink, /#discrete:100-1-GS7P-6\?amount=2\.50&label=C%2B%2B$/);
+  const parsed = pay.parseShareHash(new URL(shareLink).hash);
+  assert.equal(parsed.uri, uri);
+  assert.equal(parsed.label, "C++");
+});
+
+test("legacy links decode the outer fragment once and remain parser-compatible", function () {
+  const uri = "discrete:100-1-GS7P-6?amount=2.50&label=C%2B%2B";
+  const shareLink = LEGACY_BASE + encodeURIComponent(uri);
   assert.match(shareLink, /label%3DC%252B%252B$/);
   const parsed = pay.parseShareHash(new URL(shareLink).hash);
   assert.equal(parsed.uri, uri);
   assert.equal(parsed.label, "C++");
+  assert.equal(
+    pay.makeCurrentShareLink(PAGE_LOCATION, parsed.uri),
+    BASE + uri
+  );
 });
 
 test("preserves a raw plus instead of applying form-url-encoded semantics", function () {
@@ -133,6 +148,7 @@ test("rejects control and bidirectional label characters", function () {
 
 test("rejects malformed or ambiguous outer fragments", function () {
   assert.throws(function () { pay.parseShareHash(""); });
+  assert.throws(function () { pay.parseShareHash("#/v1/discrete:100-1-GS7P-6"); });
   assert.throws(function () { pay.parseShareHash("#request=x&v=1"); });
   assert.throws(function () { pay.parseShareHash("#v=2&request=x"); });
   assert.throws(function () { pay.parseShareHash("#v=1&request=x&extra=y"); });
@@ -143,22 +159,25 @@ test("canonical current link is HTTPS and excludes page query parameters", funct
   const uri = "discrete:100-1-GS7P-6?amount=1.00";
   const locationWithQuery = {
     protocol: "https:",
-    origin: "https://matthewfreeman.github.io",
-    pathname: "/discrete-cash/pay/",
+    origin: "https://discrete.cash",
+    pathname: "/pay/",
     search: "?utm_source=chat"
   };
   assert.equal(
     pay.makeCurrentShareLink(locationWithQuery, uri),
-    "https://matthewfreeman.github.io/discrete-cash/pay/#v=1&request=" + encodeURIComponent(uri)
+    "https://discrete.cash/pay/#" + uri
   );
   assert.throws(function () {
     pay.makeCurrentShareLink({ protocol: "http:", origin: "http://example.test", pathname: "/pay/" }, uri);
   });
   assert.throws(function () {
-    pay.makeShareLink("https://example.test/not-pay/#v=1&request=", uri);
+    pay.makeShareLink("https://example.test/not-pay/#", uri);
   });
   assert.throws(function () {
-    pay.makeShareLink("javascript:alert(1)#v=1&request=", uri);
+    pay.makeShareLink("javascript:alert(1)", uri);
+  });
+  assert.throws(function () {
+    pay.makeShareLink("https://example.test/pay/#v=1&request=", uri);
   });
 });
 
@@ -212,7 +231,7 @@ test("QR renderer encodes the exact HTTPS share link", function () {
 test("page loads the local pinned QR generator and keeps QR initially hidden", function () {
   const html = fs.readFileSync(path.join(__dirname, "..", "pay", "index.html"), "utf8");
   const pageScript = fs.readFileSync(path.join(__dirname, "..", "pay", "pay.js"), "utf8");
-  assert.match(html, /<script src="\.\/vendor\/qrcodegen\.js\?v=1\.8\.0" defer><\/script>\s*<script src="\.\/pay\.js\?v=20260801-1" defer><\/script>/);
+  assert.match(html, /<script src="\.\/vendor\/qrcodegen\.js\?v=1\.8\.0" defer><\/script>\s*<script src="\.\/pay\.js\?v=20260801-2" defer><\/script>/);
   assert.match(html, /id="copy-link"[^>]*>Copy payment link<\/button>/);
   assert.match(html, /id="qr-panel"[^>]*hidden/);
   assert.doesNotMatch(html, /https?:\/\/[^"']+qrcode[^"']*\.js/i);
