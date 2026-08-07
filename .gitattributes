@@ -1,0 +1,7 @@
+pay/*.css text eol=lf
+pay/*.html text eol=lf
+pay/*.js text eol=lf
+pay/*.md text eol=lf
+pay/vendor/*.txt text eol=lf
+pay/vendor/qrcodegen.js text eol=lf whitespace=-trailing-space
+tests/*.cjs text eol=lf

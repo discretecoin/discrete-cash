@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0d1115">
+  <meta name="description" content="Open a Discrete payment request safely in the desktop wallet.">
+  <meta property="og:title" content="Discrete payment request">
+  <meta property="og:description" content="Review the recipient and amount, then open the request in your Discrete wallet.">
+  <meta property="og:type" content="website">
+  <title>Discrete payment request</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./pay.css?v=20260801-1">
+  <script src="./vendor/qrcodegen.js?v=1.8.0" defer></script>
+  <script src="./pay.js?v=20260801-2" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="../" aria-label="Discrete home">
+        <img src="../assets/logo-mint.svg" width="34" height="34" alt="">
+        <span>Discrete</span>
+      </a>
+      <span class="header-label">Payment link</span>
+    </header>
+
+    <main class="payment-card" aria-labelledby="page-title">
+      <div class="eyebrow"><span aria-hidden="true"></span>Payment request</div>
+      <h1 id="page-title">Review before opening your wallet.</h1>
+      <p class="intro">This page never sends a payment. It only fills the request in an installed Discrete wallet, where you must review and confirm it.</p>
+
+      <section id="loading-panel" class="state-panel" aria-live="polite">
+        <p>Checking payment link…</p>
+      </section>
+
+      <section id="error-panel" class="state-panel error-panel" hidden aria-live="assertive">
+        <h2>Invalid payment link</h2>
+        <p id="error-message">The request is missing or malformed.</p>
+        <a class="secondary-link" href="../">Return to discrete.cash</a>
+      </section>
+
+      <section id="request-panel" hidden aria-live="polite">
+        <dl class="request-details">
+          <div class="detail-row recipient-row">
+            <dt>Recipient</dt>
+            <dd id="recipient-value"></dd>
+          </div>
+          <div class="detail-row">
+            <dt>Amount</dt>
+            <dd><span id="amount-value"></span><span id="amount-unit" class="unit">XDS</span></dd>
+          </div>
+          <div id="label-row" class="detail-row" hidden>
+            <dt>Label</dt>
+            <dd id="label-value"></dd>
+          </div>
+        </dl>
+
+        <p class="identity-warning"><strong>Check the account number.</strong> A label is supplied by the requester and is not a verified identity.</p>
+
+        <label class="uri-label" for="payment-uri">Payment URI</label>
+        <textarea id="payment-uri" rows="2" readonly spellcheck="false"></textarea>
+
+        <div class="actions">
+          <a id="open-wallet" class="primary-action" href="#">Open Discrete Wallet</a>
+          <button id="copy-link" class="secondary-action" type="button">Copy payment link</button>
+          <button id="show-qr" class="secondary-action" type="button" aria-controls="qr-panel" aria-expanded="false">Show QR code</button>
+        </div>
+        <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+
+        <section id="qr-panel" class="qr-panel" aria-labelledby="qr-heading" hidden>
+          <h2 id="qr-heading">Scan payment link</h2>
+          <div class="qr-canvas-frame">
+            <canvas id="payment-qr" role="img" aria-label="QR code for this HTTPS payment link"></canvas>
+          </div>
+          <p>This QR code opens the same HTTPS payment link shown in your browser. Review the request again before confirming it in the wallet.</p>
+          <p id="qr-status" class="qr-status" role="alert" aria-live="assertive"></p>
+        </section>
+
+        <p class="fallback">Wallet did not open? Install the desktop wallet, then return to this page.</p>
+        <a class="download-link" href="https://github.com/discretecoin/discrete-wallet/releases/latest" rel="noopener noreferrer">Download Discrete Wallet</a>
+      </section>
+    </main>
+
+    <footer>
+      The payment data stays in the URL fragment and is not sent to this website.
+    </footer>
+  </div>
+</body>
+</html>
