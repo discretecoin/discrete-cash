@@ -145,3 +145,10 @@
   @media(max-width:900px){
     .dc-style-48{grid-template-columns:1fr;}
   }
+  @media(max-width:720px){
+    #dcMenu{gap:clamp(10px,4vw,18px); font-size:11.5px; letter-spacing:.02em;}
+  }
+  @media(max-width:360px){
+    #dcNav{padding-left:12px; padding-right:12px;}
+    #dcMenu{justify-content:space-between; gap:0; font-size:10px; letter-spacing:0;}
+  }

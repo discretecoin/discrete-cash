@@ -1,0 +1,153 @@
+name: Prepare private service preview
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions: {}
+
+concurrency:
+  group: service-preview-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: >-
+      github.event.repository.private == true &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.body == '/prepare' &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: read
+    outputs:
+      issue_number: ${{ steps.prepare.outputs.issue_number }}
+      service_id: ${{ steps.prepare.outputs.service_id }}
+      service_name_b64: ${{ steps.prepare.outputs.service_name_b64 }}
+      review_branch: ${{ steps.prepare.outputs.review_branch }}
+    steps:
+      - name: Check out trusted moderation code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+      - name: Validate issue and build separated inputs
+        id: prepare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/prepare-review.mjs
+      - name: Upload private review record
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: service-review-record
+          path: prepared/review
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload isolated preview input
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: service-preview-input
+          path: prepared/preview
+          if-no-files-found: error
+          retention-days: 1
+
+  capture:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    permissions: {}
+    steps:
+      - name: Download isolated preview input
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: service-preview-input
+          path: preview
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+      - name: Install locked browser runtime
+        working-directory: preview
+        run: |
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+      - name: Capture homepage without repository credentials
+        working-directory: preview
+        env:
+          GITHUB_TOKEN: ""
+          GH_TOKEN: ""
+        run: node capture-homepage.mjs preview-request.json homepage.png
+      - name: Upload captured homepage
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: service-homepage-preview
+          path: preview/homepage.png
+          if-no-files-found: error
+          retention-days: 7
+
+  review-pr:
+    needs: [prepare, capture]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ needs.prepare.outputs.issue_number }}
+      SERVICE_ID: ${{ needs.prepare.outputs.service_id }}
+      SERVICE_NAME_B64: ${{ needs.prepare.outputs.service_name_b64 }}
+      REVIEW_BRANCH: ${{ needs.prepare.outputs.review_branch }}
+    steps:
+      - name: Check out trusted default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+      - name: Download private review record
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: service-review-record
+          path: prepared/review
+      - name: Download captured homepage
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: service-homepage-preview
+          path: prepared/screenshot
+      - name: Assemble private review
+        run: node scripts/assemble-review.mjs prepared/review prepared/screenshot/homepage.png reviews
+      - name: Push workflow-owned review branch
+        run: |
+          git config user.name "discrete-services-moderation[bot]"
+          git config user.email "discrete-services-moderation[bot]@users.noreply.github.com"
+          git fetch origin "$REVIEW_BRANCH:refs/remotes/origin/$REVIEW_BRANCH" || true
+          git checkout -B "$REVIEW_BRANCH" "$GITHUB_SHA"
+          git add "reviews/$ISSUE_NUMBER"
+          if git diff --cached --quiet; then
+            echo "Review package is unchanged."
+          else
+            git commit -m "Review service preview for issue $ISSUE_NUMBER"
+            git push --force-with-lease origin "$REVIEW_BRANCH"
+          fi
+      - name: Open or update private review pull request
+        run: |
+          SERVICE_NAME="$(printf '%s' "$SERVICE_NAME_B64" | base64 --decode)"
+          REVIEW_COMMIT="$(git rev-parse HEAD)"
+          PREVIEW_URL="https://github.com/$GITHUB_REPOSITORY/blob/$REVIEW_COMMIT/reviews/$ISSUE_NUMBER/$SERVICE_ID.png?raw=1"
+          PR_BODY="Private visual and catalog-record review for #$ISSUE_NUMBER. Merge only after checking the captured homepage. Merging authorizes a separate public catalog pull request; it does not publish directly."$'\n\n'"![Captured homepage preview]($PREVIEW_URL)"
+          printf '%s\n' "$PR_BODY" > "$RUNNER_TEMP/review-body.md"
+          PR_NUMBER="$(gh pr list --head "$REVIEW_BRANCH" --state open --json number --jq '.[0].number')"
+          if [ -z "$PR_NUMBER" ]; then
+            PR_URL="$(gh pr create --base "${{ github.event.repository.default_branch }}" --head "$REVIEW_BRANCH" --title "Review service preview: $SERVICE_NAME" --body-file "$RUNNER_TEMP/review-body.md")"
+          else
+            gh pr edit "$PR_NUMBER" --title "Review service preview: $SERVICE_NAME" --body-file "$RUNNER_TEMP/review-body.md"
+            PR_URL="$(gh pr view "$PR_NUMBER" --json url --jq '.url')"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --body "Private preview ready for review: $PR_URL"

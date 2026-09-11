@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit a service | Discrete</title>
+  <meta name="description" content="Submit an independent service for review in the Discrete service directory.">
+  <link rel="canonical" href="https://discrete.cash/services/submit/">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" sizes="180x180">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/styles.css">
+  <link rel="stylesheet" href="../services.css">
+  <script src="../intake-config.js" defer></script>
+  <script src="../services.js" defer></script>
+</head>
+<body>
+  <div class="dc-style-1 services-page services-submit-page">
+    <header class="dc-style-2 services-header">
+      <nav id="dcNav" class="dc-style-3" aria-label="Primary navigation">
+        <a href="../../" class="dc-style-4">
+          <img src="../../assets/logo-mint.svg" alt="Discrete logo" width="30" height="30" class="dc-style-5">
+          <span class="dc-style-6">Discrete</span>
+        </a>
+        <div id="dcNavSpacer" class="dc-style-7"></div>
+        <div id="dcMenu" class="dc-style-8">
+          <a href="../" class="dc-style-9 dc-hover-1 services-nav-current" aria-current="page">Ecosystem services</a>
+          <a href="https://docs.discrete.cash/" class="dc-style-9 dc-hover-1">Docs</a>
+          <a href="https://explorer.discrete.cash/" class="dc-style-9 dc-hover-1">Explorer</a>
+          <a href="https://wallet.discrete.cash/" class="dc-style-9 dc-hover-1">Web-wallet</a>
+        </div>
+        <a href="../../#download" class="dc-style-10 dc-hover-2">Download</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="submission-page-hero" aria-labelledby="submission-title">
+        <a class="submission-back-link" href="../"><span aria-hidden="true">←</span> All services</a>
+        <p class="services-eyebrow">Open directory</p>
+        <h1 id="submission-title">Submit a service.</h1>
+        <p>Provide the exact information that should appear in the directory. Submissions enter a private moderation queue and do not guarantee inclusion.</p>
+      </section>
+
+      <section class="submission-section submission-page-section" aria-label="Service submission form">
+        <p class="form-message" data-intake-unavailable role="status">Service submissions are not open yet. Please check back later.</p>
+        <div class="submission-layout">
+          <form id="service-submission-form" class="directory-form" method="post" novalidate>
+            <div class="form-grid">
+              <label class="form-field">
+                <span>Service name <b aria-hidden="true">*</b></span>
+                <input name="serviceName" type="text" maxlength="80" autocomplete="organization" required placeholder="Example service">
+              </label>
+
+              <label class="form-field">
+                <span>Public URL <b aria-hidden="true">*</b></span>
+                <input name="serviceUrl" type="url" maxlength="300" inputmode="url" required placeholder="https://example.com/">
+              </label>
+
+              <label class="form-field">
+                <span>Category <b aria-hidden="true">*</b></span>
+                <select name="category" required>
+                  <option value="">Choose a category</option>
+                  <option>Network infrastructure</option>
+                  <option>Wallet</option>
+                  <option>Payments</option>
+                  <option>Merchant tools</option>
+                  <option>Mining</option>
+                  <option>Liquidity</option>
+                  <option>Analytics</option>
+                  <option>Other</option>
+                </select>
+              </label>
+
+              <label class="form-field">
+                <span>Who runs this service? <b aria-hidden="true">*</b></span>
+                <input name="operator" type="text" maxlength="100" required placeholder="Person, team, company, or Unknown">
+                <small>Use the public name shown by the service. If you cannot verify who runs it, enter “Unknown”.</small>
+              </label>
+
+              <label class="form-field form-field-wide">
+                <span>Your relationship to the service <b aria-hidden="true">*</b></span>
+                <select name="submitterRelationship" required>
+                  <option value="">Choose one</option>
+                  <option>Owner or operator</option>
+                  <option>Team member or contributor</option>
+                  <option>Community nomination</option>
+                </select>
+              </label>
+
+              <label class="form-field form-field-wide">
+                <span>Short description <b aria-hidden="true">*</b></span>
+                <textarea name="description" rows="3" maxlength="400" required placeholder="What does the service let a Discrete user do?"></textarea>
+                <small>Plain facts, up to 400 characters.</small>
+              </label>
+
+              <fieldset class="card-facts-form form-field-wide">
+                <legend>Card facts</legend>
+                <p>These three short values appear directly on the service card.</p>
+                <div class="card-facts-form-grid">
+                  <label class="form-field">
+                    <span>Service type <b aria-hidden="true">*</b></span>
+                    <input name="serviceType" type="text" maxlength="60" required placeholder="Public RPC, block explorer, wallet">
+                    <small>What kind of service is it?</small>
+                  </label>
+
+                  <label class="form-field">
+                    <span>Access <b aria-hidden="true">*</b></span>
+                    <input name="access" type="text" maxlength="60" required placeholder="Web, API, desktop app, CLI">
+                    <small>How do users access it?</small>
+                  </label>
+
+                  <label class="form-field">
+                    <span>Fund handling <b aria-hidden="true">*</b></span>
+                    <input name="fundHandling" type="text" maxlength="80" required placeholder="No custody, self-custody, not applicable">
+                    <small>How does the service handle user funds? Use “Not applicable” or “Unknown” when needed.</small>
+                  </label>
+                </div>
+              </fieldset>
+
+              <label class="form-field">
+                <span>Public contact</span>
+                <input name="contact" type="text" maxlength="300" placeholder="support@example.com or https://example.com/support">
+                <small>Public support email or a dedicated HTTPS contact page.</small>
+              </label>
+
+              <label class="form-field">
+                <span>Source code URL</span>
+                <input name="sourceUrl" type="url" maxlength="300" inputmode="url" placeholder="https://github.com/owner/repo">
+              </label>
+
+              <label class="form-field form-field-wide">
+                <span>Custody, trust, and material risks <b aria-hidden="true">*</b></span>
+                <textarea name="riskNotes" rows="4" maxlength="800" required placeholder="Who controls funds or keys? What must the user trust? Which risks should be visible on the listing?"></textarea>
+              </label>
+            </div>
+
+            <label class="form-confirmation">
+              <input name="accuracyConfirmation" type="checkbox" required>
+              <span>I confirm this information is accurate to the best of my knowledge. If accepted, the service information may be published in the directory.</span>
+            </label>
+
+            <div class="turnstile-verification" aria-label="Anti-spam verification">
+              <div data-turnstile-container></div>
+              <input name="turnstileToken" type="hidden" value="">
+              <p>Complete the anti-spam check before submitting.</p>
+            </div>
+
+            <div class="form-submit-row">
+              <button type="submit" disabled>Submit for private review <span aria-hidden="true">↗</span></button>
+              <p>Rejected, incomplete, and abusive submissions are not published.</p>
+            </div>
+            <p class="form-message" role="status" aria-live="polite">Service submissions are not open yet. Please check back later.</p>
+          </form>
+
+          <aside class="submission-process" aria-label="Listing review process">
+            <h2>What happens next</h2>
+            <ol>
+              <li><span>01</span><div><strong>Private intake</strong><p>The submission enters an internal moderation queue.</p></div></li>
+              <li><span>02</span><div><strong>Review and preview</strong><p>Moderators check the URL and claims, then capture a fixed homepage preview.</p></div></li>
+              <li><span>03</span><div><strong>Publish</strong><p>Only the approved service record and preview are added to the public catalog.</p></div></li>
+            </ol>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="dc-style-97">
+      <div class="dc-style-98">
+        <div>
+          <a href="../../" class="dc-style-99">
+            <img src="../../assets/logo-solid.svg" alt="Discrete logo" width="28" height="28" class="dc-style-100">
+            <span class="dc-style-101">Discrete</span>
+          </a>
+          <p class="dc-style-102">Discretion by Design.</p>
+        </div>
+        <div>
+          <div class="dc-style-103">Protocol</div>
+          <div class="dc-style-104">
+            <a href="https://docs.discrete.cash/whitepaper/discrete-whitepaper.pdf?v=20260824-1" class="dc-style-105 dc-hover-1">Whitepaper</a>
+            <a href="https://github.com/discretecoin" class="dc-style-105 dc-hover-1">Source code</a>
+            <a href="../../#roadmap" class="dc-style-105 dc-hover-1">Roadmap</a>
+            <a href="../../#specs" class="dc-style-105 dc-hover-1">Specification</a>
+          </div>
+        </div>
+        <div>
+          <div class="dc-style-103">Network</div>
+          <div class="dc-style-104">
+            <a href="https://docs.discrete.cash/#/operators/node-operation" class="dc-style-105 dc-hover-1">Run a node</a>
+            <a href="https://explorer.discrete.cash/" class="dc-style-105 dc-hover-1">Block explorer</a>
+            <a href="https://docs.discrete.cash/#/operators/mining" class="dc-style-105 dc-hover-1">Mining guide</a>
+            <a href="../" class="dc-style-105 dc-hover-1">Ecosystem services</a>
+          </div>
+        </div>
+        <div>
+          <div class="dc-style-103">Community</div>
+          <div class="dc-style-104">
+            <a href="https://discord.gg/discrete" class="dc-style-105 dc-hover-1">Discord</a>
+            <a href="https://t.me/discretecoin" class="dc-style-105 dc-hover-1">Telegram</a>
+            <a href="https://twitter.com/discretecoin" class="dc-style-105 dc-hover-1">X</a>
+          </div>
+        </div>
+      </div>
+      <div class="dc-style-106">
+        <span class="dc-style-107">© 2021–2026 Discrete</span>
+        <span class="dc-style-108">Independent services may involve custody, market, counterparty, and operational risk.</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

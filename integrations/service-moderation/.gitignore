@@ -1,0 +1,8 @@
+node_modules/
+.dev.vars
+.wrangler/
+.browser-cache/
+
+prepared/
+publication/
+.wrangler-output/

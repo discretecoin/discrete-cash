@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ecosystem services | Discrete</title>
+  <meta name="description" content="Independent infrastructure, tools, and liquidity services built around the Discrete network.">
+  <link rel="canonical" href="https://discrete.cash/services/">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" href="../assets/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" sizes="180x180">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="services.css">
+  <script src="catalog.js" defer></script>
+  <script src="services.js" defer></script>
+</head>
+<body>
+  <div class="dc-style-1 services-page">
+    <header class="dc-style-2 services-header">
+      <nav id="dcNav" class="dc-style-3" aria-label="Primary navigation">
+        <a href="../" class="dc-style-4">
+          <img src="../assets/logo-mint.svg" alt="Discrete logo" width="30" height="30" class="dc-style-5">
+          <span class="dc-style-6">Discrete</span>
+        </a>
+        <div id="dcNavSpacer" class="dc-style-7"></div>
+        <div id="dcMenu" class="dc-style-8">
+          <a href="./" class="dc-style-9 dc-hover-1 services-nav-current" aria-current="page">Ecosystem services</a>
+          <a href="https://docs.discrete.cash/" class="dc-style-9 dc-hover-1">Docs</a>
+          <a href="https://explorer.discrete.cash/" class="dc-style-9 dc-hover-1">Explorer</a>
+          <a href="https://wallet.discrete.cash/" class="dc-style-9 dc-hover-1">Web-wallet</a>
+        </div>
+        <a href="../#download" class="dc-style-10 dc-hover-2">Download</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="directory-hero" aria-labelledby="services-title">
+        <div class="directory-hero-heading">
+          <div>
+            <p class="services-eyebrow">Discrete service directory</p>
+            <h1 id="services-title">Find a service.</h1>
+            <p class="services-intro">Explore services built on Discrete by independent operators across the ecosystem. Submissions are moderated. A listing is not an endorsement by the Discrete maintainers.</p>
+          </div>
+          <a class="directory-submit-action" href="submit/">Submit a service <span aria-hidden="true">＋</span></a>
+        </div>
+
+        <div class="directory-toolbar" aria-label="Directory controls">
+          <label class="directory-search" for="service-search">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span class="sr-only">Search services</span>
+            <input id="service-search" type="search" autocomplete="off" placeholder="Search by name, category, operator, or feature…">
+            <kbd aria-hidden="true">/</kbd>
+          </label>
+
+          <div class="directory-view-switch" role="group" aria-label="Directory view">
+            <button type="button" data-view-button="cards" class="is-active" aria-pressed="true">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="10" y="1" width="5" height="5" rx="1"/><rect x="1" y="10" width="5" height="5" rx="1"/><rect x="10" y="10" width="5" height="5" rx="1"/></svg>
+              Cards
+            </button>
+            <button type="button" data-view-button="list" aria-pressed="false">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="12" width="14" height="2" rx="1"/></svg>
+              List
+            </button>
+          </div>
+        </div>
+
+        <div class="directory-filter-row">
+          <div id="category-filters" class="category-filters" role="group" aria-label="Filter by category">
+            <button type="button" data-category-filter="all" class="is-active" aria-pressed="true">All <span>0</span></button>
+          </div>
+          <p id="directory-result-count" class="directory-result-count" aria-live="polite">Showing 0 of 0</p>
+        </div>
+
+        <p class="directory-notice"><strong>Independent services.</strong> A listing is not an endorsement. Verify the operator, status, terms, custody model, and risks before use.</p>
+      </section>
+
+      <section class="services-directory" aria-labelledby="directory-title">
+        <h2 id="directory-title" class="sr-only">Available services</h2>
+        <div id="service-results" class="directory-results" data-directory-view="cards"></div>
+
+        <template id="service-card-template">
+          <article class="service-card" data-service-card>
+            <div class="service-preview" data-card-preview-frame hidden>
+              <img data-card-preview alt="" loading="lazy">
+            </div>
+            <div class="service-card-main">
+              <header class="service-card-header">
+                <div class="service-name-row">
+                  <div>
+                    <h3 data-card-name></h3>
+                    <p class="service-domain" data-card-domain></p>
+                  </div>
+                </div>
+              </header>
+
+              <div class="service-tags" aria-label="Service classification">
+                <span class="service-tag service-tag-accent" data-card-category></span>
+                <span class="service-tag">Independent</span>
+              </div>
+
+              <p class="service-summary" data-card-summary></p>
+
+              <dl class="service-quick-facts">
+                <div><dt>Type</dt><dd data-card-service-type></dd></div>
+                <div><dt>Access</dt><dd data-card-access></dd></div>
+                <div><dt>Funds</dt><dd data-card-fund-handling></dd></div>
+              </dl>
+
+              <div class="service-card-footer">
+                <a class="service-primary-action" data-card-open rel="noopener noreferrer">Open service <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+
+            <div class="service-details-launch">
+              <button class="service-details-trigger" type="button" data-card-details-open aria-haspopup="dialog">
+                <span>Service details</span><span class="details-toggle" aria-hidden="true">＋</span>
+              </button>
+            </div>
+
+            <dialog class="service-details-modal" data-card-details-modal>
+              <div class="service-dialog-shell">
+                <header class="service-dialog-header">
+                  <div>
+                    <p class="service-label">Service details</p>
+                    <h3 data-card-dialog-title></h3>
+                  </div>
+                  <button class="service-dialog-close" type="button" data-card-details-close aria-label="Close service details">×</button>
+                </header>
+
+                <div class="service-details-body">
+                <div class="service-metadata">
+                  <dl class="service-facts">
+                    <div><dt>Operator</dt><dd data-card-operator></dd></div>
+                    <div><dt>Fund handling</dt><dd data-card-fund-handling-detail></dd></div>
+                    <div data-card-contact-row><dt>Contact</dt><dd><a data-card-contact rel="noopener noreferrer">Contact operator</a></dd></div>
+                    <div data-card-source-row><dt>Source</dt><dd><a data-card-source rel="noopener noreferrer">View source code</a></dd></div>
+                  </dl>
+
+                  <div class="service-disclosure">
+                    <p class="service-label">Trust and material risks</p>
+                    <p data-card-risks></p>
+                  </div>
+                </div>
+
+              </div>
+              </div>
+            </dialog>
+          </article>
+        </template>
+
+        <div id="directory-empty" class="directory-empty" hidden>
+          <p>No services are listed yet.</p>
+          <button type="button" id="directory-clear">Clear filters</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="dc-style-97">
+      <div class="dc-style-98">
+        <div>
+          <a href="../" class="dc-style-99">
+            <img src="../assets/logo-solid.svg" alt="Discrete logo" width="28" height="28" class="dc-style-100">
+            <span class="dc-style-101">Discrete</span>
+          </a>
+          <p class="dc-style-102">Discretion by Design.</p>
+        </div>
+        <div>
+          <div class="dc-style-103">Protocol</div>
+          <div class="dc-style-104">
+            <a href="https://docs.discrete.cash/whitepaper/discrete-whitepaper.pdf?v=20260824-1" class="dc-style-105 dc-hover-1">Whitepaper</a>
+            <a href="https://github.com/discretecoin" class="dc-style-105 dc-hover-1">Source code</a>
+            <a href="../#roadmap" class="dc-style-105 dc-hover-1">Roadmap</a>
+            <a href="../#specs" class="dc-style-105 dc-hover-1">Specification</a>
+          </div>
+        </div>
+        <div>
+          <div class="dc-style-103">Network</div>
+          <div class="dc-style-104">
+            <a href="https://docs.discrete.cash/#/operators/node-operation" class="dc-style-105 dc-hover-1">Run a node</a>
+            <a href="https://explorer.discrete.cash/" class="dc-style-105 dc-hover-1">Block explorer</a>
+            <a href="https://docs.discrete.cash/#/operators/mining" class="dc-style-105 dc-hover-1">Mining guide</a>
+            <a href="./" class="dc-style-105 dc-hover-1" aria-current="page">Ecosystem services</a>
+          </div>
+        </div>
+        <div>
+          <div class="dc-style-103">Community</div>
+          <div class="dc-style-104">
+            <a href="https://discord.gg/discrete" class="dc-style-105 dc-hover-1">Discord</a>
+            <a href="https://t.me/discretecoin" class="dc-style-105 dc-hover-1">Telegram</a>
+            <a href="https://twitter.com/discretecoin" class="dc-style-105 dc-hover-1">X</a>
+          </div>
+        </div>
+      </div>
+      <div class="dc-style-106">
+        <span class="dc-style-107">© 2021–2026 Discrete</span>
+        <span class="dc-style-108">Independent services may involve custody, market, counterparty, and operational risk.</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

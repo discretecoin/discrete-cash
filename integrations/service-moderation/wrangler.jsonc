@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "discrete-services-intake",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-14",
+  "ratelimits": [{
+    "name": "SUBMISSION_RATE_LIMIT",
+    "namespace_id": "1001",
+    "simple": { "limit": 20, "period": 60 }
+  }],
+  "vars": {
+    "ALLOWED_ORIGINS": "https://discrete.cash",
+    "TURNSTILE_HOSTNAMES": "discrete.cash",
+    "TURNSTILE_ACTION": "service_submission",
+    "MODERATION_REPO_OWNER": "",
+    "MODERATION_REPO_NAME": ""
+  }
+}

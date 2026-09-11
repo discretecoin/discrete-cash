@@ -1,0 +1,204 @@
+name: Publish approved service
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      pull_request_number:
+        description: Merged private review pull request number
+        required: true
+        type: number
+
+permissions: {}
+
+concurrency:
+  group: publish-service-${{ github.event.pull_request.number || inputs.pull_request_number }}
+  cancel-in-progress: false
+
+jobs:
+  export-approved-review:
+    if: >-
+      github.event.repository.private == true &&
+      (github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'service-review/issue-')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Resolve and validate the merged review pull request
+        id: review-pr
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pull_request_number }}
+        run: |
+          if ! [[ "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            echo 'Pull request number is invalid.'
+            exit 1
+          fi
+          PR_JSON="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER")"
+          MERGE_SHA="$(jq -r '.merge_commit_sha' <<< "$PR_JSON")"
+          MERGED="$(jq -r '.merged' <<< "$PR_JSON")"
+          BASE_REPOSITORY="$(jq -r '.base.repo.full_name' <<< "$PR_JSON")"
+          BASE_REF="$(jq -r '.base.ref' <<< "$PR_JSON")"
+          BASE_SHA="$(jq -r '.base.sha' <<< "$PR_JSON")"
+          HEAD_REPOSITORY="$(jq -r '.head.repo.full_name' <<< "$PR_JSON")"
+          HEAD_REF="$(jq -r '.head.ref' <<< "$PR_JSON")"
+          HEAD_SHA="$(jq -r '.head.sha' <<< "$PR_JSON")"
+          if [ "$MERGED" != 'true' ] ||
+             [ "$BASE_REPOSITORY" != "$GITHUB_REPOSITORY" ] ||
+             [ "$BASE_REF" != "$DEFAULT_BRANCH" ] ||
+             [ "$HEAD_REPOSITORY" != "$GITHUB_REPOSITORY" ] ||
+             ! [[ "$HEAD_REF" =~ ^service-review/issue-[1-9][0-9]*-[a-z0-9]+(-[a-z0-9]+)*$ ]] ||
+             ! [[ "$MERGE_SHA" =~ ^[0-9a-f]{40}$ ]] ||
+             ! [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] ||
+             ! [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo 'Pull request is not a merged workflow-owned review.'
+            exit 1
+          fi
+          {
+            echo "merge_sha=$MERGE_SHA"
+            echo "base_sha=$BASE_SHA"
+            echo "head_sha=$HEAD_SHA"
+            echo "head_ref=$HEAD_REF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Check out trusted moderation code and review history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.workflow_sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+      - name: Export the exact approved review package
+        env:
+          PR_MERGE_SHA: ${{ steps.review-pr.outputs.merge_sha }}
+          PR_BASE_SHA: ${{ steps.review-pr.outputs.base_sha }}
+          PR_HEAD_SHA: ${{ steps.review-pr.outputs.head_sha }}
+          PR_HEAD_REF: ${{ steps.review-pr.outputs.head_ref }}
+        run: node scripts/export-approved-review.mjs publication
+      - name: Upload the publication package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: approved-service-publication
+          path: publication
+          if-no-files-found: error
+          retention-days: 1
+
+  open-public-pull-request:
+    needs: export-approved-review
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Check out trusted publisher code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: publisher
+          persist-credentials: false
+          ref: ${{ github.workflow_sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+      - name: Download the approved publication package
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: approved-service-publication
+          path: publication
+      - name: Resolve the public website target
+        id: target
+        env:
+          PUBLIC_REPO_OWNER: ${{ vars.PUBLIC_REPO_OWNER }}
+          PUBLIC_REPO_NAME: ${{ vars.PUBLIC_REPO_NAME }}
+          PUBLIC_BASE_BRANCH: ${{ vars.PUBLIC_BASE_BRANCH }}
+        run: node publisher/scripts/publication-target.mjs
+      - name: Create a repository-scoped publisher token
+        id: publisher-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          client-id: ${{ vars.PUBLISHER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PUBLISHER_PRIVATE_KEY }}
+          owner: ${{ steps.target.outputs.owner }}
+          repositories: ${{ steps.target.outputs.repository }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Check out the public website branch without stored credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ steps.target.outputs.full_name }}
+          ref: ${{ steps.target.outputs.branch }}
+          token: ${{ steps.publisher-token.outputs.token }}
+          persist-credentials: false
+          path: public
+      - name: Apply the approved record and preview
+        id: apply
+        run: node publisher/scripts/apply-publication.mjs publication public
+      - name: Verify the exact public diff and tests without credentials
+        id: diff
+        working-directory: public
+        env:
+          GITHUB_TOKEN: ""
+          GH_TOKEN: ""
+          SERVICE_ID: ${{ steps.apply.outputs.service_id }}
+        run: |
+          node ../publisher/scripts/check-public-diff.mjs
+          git diff --check
+          node --test tests/*.test.cjs
+      - name: Push the workflow-owned public branch
+        if: steps.diff.outputs.changed == 'true'
+        working-directory: public
+        env:
+          APP_TOKEN: ${{ steps.publisher-token.outputs.token }}
+          PUBLICATION_BRANCH: ${{ steps.apply.outputs.publication_branch }}
+          SERVICE_ID: ${{ steps.apply.outputs.service_id }}
+        run: |
+          git config user.name "discrete-services-publisher[bot]"
+          git config user.email "discrete-services-publisher[bot]@users.noreply.github.com"
+          git checkout -B "$PUBLICATION_BRANCH"
+          git add services/catalog.js "services/assets/previews/$SERVICE_ID.png"
+          git commit -m "List approved service: $SERVICE_ID"
+          AUTH_HEADER="$(printf 'x-access-token:%s' "$APP_TOKEN" | base64 -w0)"
+          git -c http.https://github.com/.extraheader="AUTHORIZATION: basic $AUTH_HEADER" fetch origin "+refs/heads/$PUBLICATION_BRANCH:refs/remotes/origin/$PUBLICATION_BRANCH" || true
+          REMOTE_SHA="$(git rev-parse --verify "refs/remotes/origin/$PUBLICATION_BRANCH" 2>/dev/null || true)"
+          git -c http.https://github.com/.extraheader="AUTHORIZATION: basic $AUTH_HEADER" push --force-with-lease="refs/heads/$PUBLICATION_BRANCH:$REMOTE_SHA" origin "HEAD:$PUBLICATION_BRANCH"
+      - name: Open or update the public catalog pull request
+        if: steps.diff.outputs.changed == 'true'
+        id: public-pr
+        env:
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
+          PUBLICATION_BRANCH: ${{ steps.apply.outputs.publication_branch }}
+          SERVICE_NAME_B64: ${{ steps.apply.outputs.service_name_b64 }}
+          PUBLIC_REPO: ${{ steps.target.outputs.full_name }}
+          PUBLIC_OWNER: ${{ steps.target.outputs.owner }}
+          PUBLIC_BASE: ${{ steps.target.outputs.branch }}
+        run: |
+          SERVICE_NAME="$(printf '%s' "$SERVICE_NAME_B64" | base64 --decode)"
+          PR_NUMBER="$(gh pr list --repo "$PUBLIC_REPO" --base "$PUBLIC_BASE" --head "$PUBLIC_OWNER:$PUBLICATION_BRANCH" --state open --json number --jq '.[0].number // empty')"
+          printf '%s\n' 'Adds the approved public service record and its reviewed homepage preview. The listing reaches the website only after this pull request is merged.' > "$RUNNER_TEMP/public-body.md"
+          if [ -z "$PR_NUMBER" ]; then
+            PR_URL="$(gh pr create --repo "$PUBLIC_REPO" --base "$PUBLIC_BASE" --head "$PUBLICATION_BRANCH" --title "List service: $SERVICE_NAME" --body-file "$RUNNER_TEMP/public-body.md")"
+          else
+            gh pr edit "$PR_NUMBER" --repo "$PUBLIC_REPO" --title "List service: $SERVICE_NAME" --body-file "$RUNNER_TEMP/public-body.md"
+            PR_URL="$(gh pr view "$PR_NUMBER" --repo "$PUBLIC_REPO" --json url --jq '.url')"
+          fi
+          echo "url=$PR_URL" >> "$GITHUB_OUTPUT"
+      - name: Link the public pull request from the private moderation issue
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ steps.apply.outputs.issue_number }}
+          PUBLIC_PR_URL: ${{ steps.public-pr.outputs.url }}
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments" -f body="Approved record exported to a public catalog pull request: $PUBLIC_PR_URL"
+      - name: Report an already published package
+        if: steps.diff.outputs.changed == 'false'
+        run: echo 'The approved record and image already match the public base branch.' >> "$GITHUB_STEP_SUMMARY"

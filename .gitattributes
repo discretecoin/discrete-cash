@@ -5,3 +5,10 @@ pay/*.md text eol=lf
 pay/vendor/*.txt text eol=lf
 pay/vendor/qrcodegen.js text eol=lf whitespace=-trailing-space
 tests/*.cjs text eol=lf
+services/*.css text eol=lf
+services/*.html text eol=lf
+services/*.js text eol=lf
+services/*.md text eol=lf
+services/submit/*.html text eol=lf
+integrations/** text eol=lf
+.github/**/*.yml text eol=lf
